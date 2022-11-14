@@ -1,0 +1,24 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Edit Paper | {{ object.domain }}</title>
+{% endblock title %}
+
+{% block main %} 
+<div class="col">
+  <div class="card border-0">
+    <div class="card-body">
+        <h5 class="card-title">Edit Details</h5>
+        <form method="POST" class="form-group">
+            {% csrf_token %}
+            <div class="row md-3">
+                {{ form|crispy }}
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary" value="Save">Save Changes</button>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock main %}

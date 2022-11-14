@@ -1,0 +1,53 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Add New Paper</title>
+{% endblock title %}
+
+{% block main %}
+<div class="row row-cols-1 g-2">
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="col py-2">
+        <div class="card border-0">
+            <div class="card-body">
+                <h5 class="card-title">Upload Your File</h5>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-2 py-3">
+                        {{ fileupload_form|crispy }}
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="import">Import</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card border-0">
+            <div class="card-body">
+                <h5 class="card-title">Enter Details</h5>
+                <form method="POST" class="form-group">
+                    {% csrf_token %}
+                    <div class="row md-3">
+                        {{ addpaper_form|crispy }}
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" name="add-details">Add Details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

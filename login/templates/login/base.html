@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static 'login/css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
+</head>
+<body>
+    <section class="h-100 gradient-form">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-xl-10">
+                    <div class="rounded-3 text-black">
+                        {% block centerdiv %} {% endblock %}
+                            <div class="col-lg-6">
+                                {% block txtcntr %}{% endblock %}
+                                    <div class="text-center">
+                                        <img src="{% static 'login/img/mr-logo.png' %}" style="width: 185px;" alt="logo">
+                                        <h4><br></h4>
+                                    </div>
+                                    
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            {% if message.tags == "error" %}
+                                                <div class="alert alert-danger">
+                                                    {{ message }}
+                                                </div>
+                                            {% else %}
+                                                <div class="alert alert-{{ message.tags }}">
+                                                    {{ message }}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% block content %}{% endblock %}
+                                    
+                                </div>
+                            </div>
+                                {% block desc %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center text-lg-start">
+        <div class="text-center p-4 align-items-end copy">
+            <p>2022 © All rights reserved & Privacy Policy</p>
+        </div>
+    </footer>
+
+
+    <script src="{% static 'login/js/mdb.min.js' %}"></script>
+    
+</body>
+</html>

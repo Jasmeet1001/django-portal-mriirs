@@ -1,0 +1,4 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+    "python.defaultInterpreterPath": "D:/my_project_django/env/Scripts/python.exe",
+}

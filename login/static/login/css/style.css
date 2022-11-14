@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+    
+
+.copy p {
+    transform: translateY(190px);
+    color: #b9c2cd;
+}
+
+.asteriskField {
+    display: none;
+}
