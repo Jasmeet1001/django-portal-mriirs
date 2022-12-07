@@ -29,10 +29,10 @@ def year_choices():
     return [(year, year) for year in range(2000, datetime.date.today().year+1)]
 
 class AddPaper(forms.ModelForm):
-    year = forms.TypedChoiceField(coerce=int, choices=year_choices, initial=current_year, required=False)
+    # year = forms.TypedChoiceField(coerce=int, choices=year_choices, initial=current_year, required=False)
     class Meta:
         model = ResearchPaper
-        fields = ['authors', 'affilation', 'domain', 'doi', 'month', 'year']
+        fields = [ 'faculty', 'authors', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'scholar', 'month', 'year', 'doi', 'scopus_id']
     
 class ImportFile(forms.Form):
     file = forms.FileField(label='')

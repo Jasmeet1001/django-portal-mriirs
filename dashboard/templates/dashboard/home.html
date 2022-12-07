@@ -13,28 +13,36 @@
     <table class="table">
       <thead>
         <tr>
+            <th scope="col">Faculty</th>
             <th scope="col">Authors</th>
-            <th scope="col">Affilation</th>
-            <th scope="col">Domain of Paper</th>
-            <th scope="col">DOI</th>
+            <th scope="col">Title of Paper</th>
+            <th scope="col">Department</th>
+            <th scope="col">Name of Journal</th>
+            <th scope="col">Name of Conference</th>
+            <th scope="col">Title of Book</th>
+            <th scope="col">Title of Chapter</th>
+            <th scope="col">Student</th>
+            <th scope="col">Scholar</th>
             <th scope="col">Month of Publish</th>
             <th scope="col">Year of Publish</th>
+            <th scope="col">DOI</th>
+            <th scope="col">Scopus ID</th>
             <th scope="col">Change Details</th>
         </tr>
       </thead>
       <tbody>
         {% for paper in page_obj %}
             <tr>
+                <td>{{ paper.faculty }}</td>
                 <td>{{ paper.authors }}</td>
-                <td>{{ paper.affilation }}</td>
-                <td>{{ paper.domain }}</td>
-                
-                {% if paper.doi != '' %}
-                    <td><a href="{{ paper.doi }}" target="_blank">{{ paper.doi }}</a></td>
-                {% else %}
-                    <td>  </td>
-                {% endif %}
-
+                <td>{{ paper.title_of_paper }}</td>
+                <td>{{ paper.dept }}</td>
+                <td>{{ paper.name_of_journal }}</td>
+                <td>{{ paper.conference }}</td>
+                <td>{{ paper.title_of_book }}</td>
+                <td>{{ paper.title_of_chapter }}</td>
+                <td>{{ paper.student }}</td>
+                <td>{{ paper.scholar }}</td>
                 <td>{{ paper.month }}</td>
 
                 {% if paper.year != None %}
@@ -42,6 +50,15 @@
                 {% else %}
                     <td>  </td>
                 {% endif %}
+                
+                {% if paper.doi != '' %}
+                    <td><a href="{{ paper.doi }}" target="_blank">{{ paper.doi }}</a></td>
+                {% else %}
+                    <td>  </td>
+                {% endif %}
+
+                <td>{{ paper.scopus_id }}</td>
+
                 <td>
                     <button type="button" class="btn btn-link btn-sm">
                         <a href="{% url 'dashboard-edit' paper.id %}">Edit</a>

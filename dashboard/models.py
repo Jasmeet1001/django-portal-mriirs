@@ -48,15 +48,23 @@ def max_value_current_year(value):
     return MaxValueValidator(current_year())(value)
 
 class ResearchPaper(models.Model):
+    faculty = models.CharField(max_length=10, blank=True)
     authors = models.CharField(max_length=200, null=False)
-    affilation = models.CharField(max_length=50, blank=True)
-    domain = models.CharField(max_length=150, blank=True)
-    doi = models.URLField(blank=True)
+    title_of_paper = models.CharField(max_length=200, blank=True)
+    dept = models.CharField(max_length=50, blank=True)
+    name_of_journal = models.CharField(max_length=200, blank=True)
+    name_of_conference = models.CharField(max_length=200, blank=True)
+    title_of_book = models.CharField(max_length=200, blank=True)
+    title_of_chapter = models.CharField(max_length=200, blank=True)
+    student = models.CharField(max_length=10, blank=True)
+    scholar = models.CharField(max_length=10, blank=True)
     month = models.CharField(max_length=15, blank=True)
-    year = models.IntegerField(('year'), validators= [MinValueValidator(2000), max_value_current_year], null=True)
-
+    year = models.CharField(max_length=15, blank=True)
+    doi = models.URLField(blank=True)
+    scopus_id = models.CharField(max_length=50, blank=True)
+    
     def __str__(self):
-        return f'{self.authors} {self.domain} {self.month} {self.year}'
+        return f'{self.authors} {self.title_of_paper} {self.month} {self.year}'
     
     def get_absolute_url(self):
         return reverse('dashboard-edit', kwargs={'pk': self.pk})

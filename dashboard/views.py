@@ -5,17 +5,48 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 
 from .models import ResearchPaper
 from .forms import UserUpdateForm, ProfileUpdateForm, AddPaper, ImportFile, AdditionalInfoUpdateForm
 
-from .import_paper import import_excel
+from .imp_exp import import_excel, pd
 
 # Create your views here.
 class UpdatePaperView(LoginRequiredMixin, UpdateView):
     model = ResearchPaper
-    fields = ['authors', 'affilation', 'domain', 'doi', 'month', 'year']
+    fields = [ 'faculty', 'authors', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'scholar', 'month', 'year', 'doi', 'scopus_id']
     template_name = 'dashboard/paper_edit.html'
+
+@login_required
+def export_data(request):
+    import uuid
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={uuid.uuid4()}.xlsx'
+    object = ResearchPaper.objects.all()
+    data = []
+
+    for obj in object:
+        data.append(
+            {
+                'faculty': obj.faculty,
+                'authors': obj.authors,
+                'title_of_paper': obj.title_of_paper,
+                'dept': obj.dept,
+                'name_of_journal': obj.name_of_journal,
+                'name_of_conference': obj.name_of_conference,
+                'title_of_book': obj.title_of_book,
+                'title_of_chapter': obj.title_of_chapter,
+                'scholar': obj.scholar,
+                'month': obj.month,
+                'year': obj.year,
+                'doi': obj.doi,
+                'scopus_id': obj.scopus_id
+            }
+        )
+    df = pd.DataFrame(data)
+    df.to_excel(response, index=False)
+    return response
 
 @login_required
 def homepage(request):
@@ -24,11 +55,18 @@ def homepage(request):
         search = request.GET.get('search-result')
 
     paper_list = ResearchPaper.objects.filter(
+        Q(faculty__icontains=search) | 
         Q(authors__icontains=search) | 
-        Q(domain__icontains=search) | 
-        Q(affilation__icontains=search) | 
-        Q(month__icontains=search) | 
-        Q(year__icontains=search)).order_by('-id')
+        Q(title_of_paper__icontains=search) | 
+        Q(dept__icontains=search) | 
+        Q(name_of_journal__icontains=search) | 
+        Q(name_of_conference__icontains=search) | 
+        Q(title_of_book__icontains=search) |
+        Q(title_of_chapter__icontains=search) |
+        Q(scholar__icontains=search) | 
+        Q(month__icontains=search) |
+        Q(year__icontains=search) |
+        Q(scopus_id__icontains=search)).order_by('-id')
     # paper_all = ResearchPaper.objects.all().order_by('-id')
     paginator = Paginator(paper_list, 10)
     page_number = request.GET.get('page')
