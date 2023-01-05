@@ -14,50 +14,40 @@
     <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
 </head>
 <body>
-    <section class="h-100 gradient-form">
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-xl-10">
-                    <div class="rounded-3 text-black">
-                        {% block centerdiv %} {% endblock %}
-                            <div class="col-lg-6">
-                                {% block txtcntr %}{% endblock %}
-                                    <div class="text-center">
-                                        <img src="{% static 'login/img/mr-logo.png' %}" style="width: 185px;" alt="logo">
-                                        <h4><br></h4>
-                                    </div>
-                                    
-                                    {% if messages %}
-                                        {% for message in messages %}
-                                            {% if message.tags == "error" %}
-                                                <div class="alert alert-danger">
-                                                    {{ message }}
-                                                </div>
-                                            {% else %}
-                                                <div class="alert alert-{{ message.tags }}">
-                                                    {{ message }}
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
+    <section class="jasmeet ">
+        <div class="shivam" >
+            <img src="{% static 'login/img/mr-bg.jpg' %}" style="width: 100%; height: 100vh; filter: brightness(50%);"  alt="mr-bg">
+            
+            <!-- <p style="color: #b9c2cd;">2023 © All rights reserved & Privacy Policy</p> -->
+            
+        </div>
+        <div class="sainsh " >
+            <div class="rounded-3 text-black justify-content-center" >
+                    <div class="col-lg-6" style=" width: 100%;">
+                        {% block txtcntr %}{% endblock %}
+                            <div class="text-center">
+                                <img src="{% static 'login/img/mr-logo.png' %}" style="width: 185px;" alt="mr-logo">
+                                <h4><br></h4>
+                            </div>  
+                            
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger">
+                                            {{ message }}
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-{{ message.tags }}">
+                                            {{ message }}
+                                        </div>
                                     {% endif %}
-                                    {% block content %}{% endblock %}
-                                    
-                                </div>
-                            </div>
-                                {% block desc %}{% endblock %}
-                        </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% block content %}{% endblock %}
                     </div>
-                </div>
             </div>
         </div>
     </section>
-
-    <footer class="text-center text-lg-start">
-        <div class="text-center p-4 align-items-end copy">
-            <p>2022 © All rights reserved & Privacy Policy</p>
-        </div>
-    </footer>
-
 
     <script src="{% static 'login/js/mdb.min.js' %}"></script>
     

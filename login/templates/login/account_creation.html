@@ -6,39 +6,28 @@
 {% endblock title %}
 
 {% block centerdiv %}
-<div class="row g-0">
+<div class="  d-flex justify-content-center ">
 {% endblock centerdiv%}
 
 {% block txtcntr %}
-<div class="card-body p-md-5 mx-md-4">
+<div class="card-body ">
 {% endblock txtcntr %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" class="">
     {% csrf_token %}
-    <fieldset class="form-inline mb-4">
+    <fieldset class="form-inline ">
         {{ form|crispy }}
     </fieldset>
-    <div class="text-center pt-1 mb-5 pb-1">
-        <button class="btn btn-primary btn-block fa-lg  mb-3" type="submit">
+    <div class="text-center mt-2 ">
+        <button class="btn btn-primary btn-block fa-lg  " type="submit">
             Create account
         </button>
     </div>
 </form>
-<div class="border-top pt-3">
+<div class="border-top mt-3">
     <small class="text-muted">
         Already have an account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
     </small>
 </div>
 {% endblock content %}
-
-{% block desc %}
-<div class="col-lg-6 d-flex align-items-center">
-    <div class="text-black px-3 py-4 p-md-5 mx-md-4">
-        <h4 class="mb-4">Manav Rachna International Institute of Research and Studies </h4>
-        <p class="small mb-0">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo debitis magnam, ex aspernatur aut minus ullam sapiente tenetur mollitia quaerat nihil reiciendis nam? Expedita odit sequi sed deleniti amet suscipit.
-        </p>
-    </div>
-</div>
-{% endblock desc %}
