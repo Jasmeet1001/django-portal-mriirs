@@ -23,5 +23,6 @@ urlpatterns = [
     path('register/', user_views.create_account, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='login/login_home.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='login/logout_home.html'), name='logout'),
+    path('password_reset/', user_views.reset_pass, name = 'password_reset'),
     path('', include('dashboard.urls')),
 ]
