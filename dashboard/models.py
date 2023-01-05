@@ -27,16 +27,16 @@ class Profile(models.Model):
 
 class AdditionalInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    designation = models.CharField(max_length=4, blank=True)
+    designation = models.CharField(max_length=20, blank=True)
     scopus_id = models.CharField(max_length=50, blank=True)
     wos_id = models.CharField(max_length=50, blank=True)
     citation_count = models.CharField(max_length=50, blank=True)
     month_year = models.CharField(max_length=50, blank=True)
-    dept = models.CharField(max_length=50, blank=True)
+    dept = models.CharField(max_length=7, blank=True)
     orcid_id = models.CharField(max_length=50, blank=True)
     vidwan_id = models.CharField(max_length=50, blank=True)
-    h_index = models.CharField(max_length=50, blank=True)
-    i_index = models.CharField(max_length=50, blank=True)
+    h_index = models.CharField(max_length=10, blank=True)
+    i_index = models.CharField(max_length=10, blank=True)
 
     def __str__(self):
          return f'Additional Info about {self.user.username}'
