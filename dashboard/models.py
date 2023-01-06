@@ -50,6 +50,7 @@ def max_value_current_year(value):
 class ResearchPaper(models.Model):
     faculty = models.CharField(max_length=10, blank=True)
     authors = models.CharField(max_length=200, null=False)
+    domain = models.CharField(max_length=100, blank=True)
     title_of_paper = models.CharField(max_length=200, blank=True)
     dept = models.CharField(max_length=50, blank=True)
     name_of_journal = models.CharField(max_length=200, blank=True)
