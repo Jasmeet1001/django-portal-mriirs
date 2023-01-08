@@ -1,0 +1,22 @@
+{% extends "login/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Reset Password</title>
+{% endblock title %}
+
+{% block txtcntr %}
+<div class="card-body p-md-3">
+{% endblock txtcntr %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="text pt-3">
+        <button class="btn btn-primary btn-block fa-lg  mb-3" type="submit">
+            Reset Password
+        </button>
+    </div>
+</form>
+{% endblock content %}

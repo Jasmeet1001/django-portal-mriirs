@@ -1,0 +1,20 @@
+{% extends "login/base.html" %}
+
+{% block title %}
+<title>Reset Password</title>
+{% endblock title %}
+
+{% block centerdiv %}
+<div class="row g-0 justify-content-center">
+{% endblock centerdiv%}
+
+{% block txtcntr %}
+<div class="card-body p-md-5 mx-md-4">
+{% endblock txtcntr %}
+
+{% block content %}
+<div class="alert alter-info">
+    Your password has been set.
+</div>
+<a href="{% url 'login' %}">Sign In Here</a>
+{% endblock content %}
