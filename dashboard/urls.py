@@ -10,8 +10,8 @@ urlpatterns = [
     path('paper/<int:pk>/edit/', UpdatePaperView.as_view(), name='dashboard-edit'),
     path('paper/export', views.export_data, name='dashboard-export'),
     # path('profile/', views.profile_view, name='dashboard-profile'),
-    path('profile/<str:username>', views.profile_view, name='dashboard-profile'),
-    path('profile/<str:username>/paper/', views.my_papers, name='dashboard-mypaper'),
+    path('<str:username>/', views.profile_view, name='dashboard-profile'),
+    path('<str:username>/paper/', views.my_papers, name='dashboard-mypaper'),
 
 ]
 
