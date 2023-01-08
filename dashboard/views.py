@@ -17,7 +17,7 @@ SEARCH_UN = ''
 
 class UpdatePaperView(LoginRequiredMixin, UpdateView):
     model = ResearchPaper
-    fields = [ 'faculty', 'authors', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'scholar', 'month', 'year', 'doi', 'scopus_id']
+    fields = [ 'faculty', 'authors', 'domain', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'student', 'scholar', 'month', 'year', 'doi', 'scopus_id']
     template_name = 'dashboard/paper_edit.html'
 
 @login_required
@@ -26,7 +26,7 @@ def export_data(request):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename={uuid.uuid4()}.xlsx'
     object = []
-    SEARCH = SEARCH_UN.split(':')
+    SEARCH = SEARCH_UN.strip().split(':')
     if SEARCH_UN == '':
         object = ResearchPaper.objects.all()
     else:
@@ -46,33 +46,34 @@ def export_data(request):
                 Q(year__icontains=SEARCH[0]) |
                 Q(scopus_id__icontains=SEARCH[0])).order_by('-id') 
         elif len(SEARCH) == 2:
-            match SEARCH[0]:
+            to_search = SEARCH[1].strip()
+            match SEARCH[0].strip():
                 case 'faculty':
-                    object = ResearchPaper.objects.filter(faculty__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(faculty__icontains=to_search).order_by('-id')
                 case 'authors':
-                    object = ResearchPaper.objects.filter(authors__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(authors__icontains=to_search).order_by('-id')
                 case 'title of paper':
-                    object = ResearchPaper.objects.filter(title_of_paper__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(title_of_paper__icontains=to_search).order_by('-id')
                 case 'department':
-                    object = ResearchPaper.objects.filter(dept__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(dept__icontains=to_search).order_by('-id')
                 case 'name of journal':
-                    object = ResearchPaper.objects.filter(name_of_journal__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(name_of_journal__icontains=to_search).order_by('-id')
                 case 'name of conference':
-                    object = ResearchPaper.objects.filter(name_of_conference__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(name_of_conference__icontains=to_search).order_by('-id')
                 case 'title of book':
-                    object = ResearchPaper.objects.filter(title_of_book__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(title_of_book__icontains=to_search).order_by('-id')
                 case 'title of chapter':
-                    object = ResearchPaper.objects.filter(title_of_chapter__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(title_of_chapter__icontains=to_search).order_by('-id')
                 case 'scholar':
-                    object = ResearchPaper.objects.filter(scholar__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(scholar__icontains=to_search).order_by('-id')
                 case 'student':
-                    object = ResearchPaper.objects.filter(student__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(student__icontains=to_search).order_by('-id')
                 case 'month':
-                    object = ResearchPaper.objects.filter(month__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(month__icontains=to_search).order_by('-id')
                 case 'year':
-                    object = ResearchPaper.objects.filter(year__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(year__icontains=to_search).order_by('-id')
                 case 'scopus id':
-                    object = ResearchPaper.objects.filter(scopus_id__icontains=SEARCH[1]).order_by('-id')
+                    object = ResearchPaper.objects.filter(scopus_id__icontains=to_search).order_by('-id')
 
     data = []
 
@@ -81,14 +82,14 @@ def export_data(request):
             {
                 'faculty': obj.faculty,
                 'authors': obj.authors,
-                'title_of_paper': obj.title_of_paper,
-                'dept': obj.dept,
-                'name_of_journal': obj.name_of_journal,
-                'name_of_conference': obj.name_of_conference,
-                'title_of_book': obj.title_of_book,
-                'title_of_chapter': obj.title_of_chapter,
-                'scholar': obj.scholar,
+                'title of paper': obj.title_of_paper,
+                'dept.': obj.dept,
+                'name of journal': obj.name_of_journal,
+                'name of conference': obj.name_of_conference,
+                'title of book': obj.title_of_book,
+                'title of chapter': obj.title_of_chapter,
                 'student': obj.student,
+                'scholar': obj.scholar,
                 'month': obj.month,
                 'year': obj.year,
                 'doi': obj.doi,
@@ -107,7 +108,7 @@ def homepage(request):
         SEARCH_UN = request.GET.get('search-result')
     
     paper_list = []
-    SEARCH = SEARCH_UN.split(':')
+    SEARCH = SEARCH_UN.strip().split(':')
     if len(SEARCH) == 1:
         paper_list = ResearchPaper.objects.filter(
             Q(faculty__icontains=SEARCH[0]) | 
@@ -124,34 +125,34 @@ def homepage(request):
             Q(scopus_id__icontains=SEARCH[0])).order_by('-id')
 
     elif len(SEARCH) == 2:
-        print('no')
-        match SEARCH[0]:
+        to_scr = SEARCH[1].strip()
+        match SEARCH[0].strip():
             case 'faculty':
-                paper_list = ResearchPaper.objects.filter(faculty__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(faculty__icontains=to_scr).order_by('-id')
             case 'authors':
-                paper_list = ResearchPaper.objects.filter(authors__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(authors__icontains=to_scr).order_by('-id')
             case 'title of paper':
-                paper_list = ResearchPaper.objects.filter(title_of_paper__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(title_of_paper__icontains=to_scr).order_by('-id')
             case 'department':
-                paper_list = ResearchPaper.objects.filter(dept__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(dept__icontains=to_scr).order_by('-id')
             case 'name of journal':
-                paper_list = ResearchPaper.objects.filter(name_of_journal__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(name_of_journal__icontains=to_scr).order_by('-id')
             case 'name of conference':
-                paper_list = ResearchPaper.objects.filter(name_of_conference__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(name_of_conference__icontains=to_scr).order_by('-id')
             case 'title of book':
-                paper_list = ResearchPaper.objects.filter(title_of_book__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(title_of_book__icontains=to_scr).order_by('-id')
             case 'title of chapter':
-                paper_list = ResearchPaper.objects.filter(title_of_chapter__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(title_of_chapter__icontains=to_scr).order_by('-id')
             case 'scholar':
-                paper_list = ResearchPaper.objects.filter(scholar__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(scholar__icontains=to_scr).order_by('-id')
             case 'student':
-                paper_list = ResearchPaper.objects.filter(student__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(student__icontains=to_scr).order_by('-id')
             case 'month':
-                paper_list = ResearchPaper.objects.filter(month__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(month__icontains=to_scr).order_by('-id')
             case 'year':
-                paper_list = ResearchPaper.objects.filter(year__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(year__icontains=to_scr).order_by('-id')
             case 'scopus id':
-                paper_list = ResearchPaper.objects.filter(scopus_id__icontains=SEARCH[1]).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(scopus_id__icontains=to_scr).order_by('-id')
 
     # # paper_all = ResearchPaper.objects.all().order_by('-id')
     paginator = Paginator(paper_list, 10)
@@ -198,7 +199,7 @@ def add_new(request):
         if 'import' in request.POST:
             fileupload_form = ImportFile(request.POST, request.FILES, prefix='fileupload')
             if fileupload_form.is_valid():
-                if (request.FILES['fileupload-file'].name[-4:] == 'xlsx' or request.FILES['fileupload-file'].name[-3:] == 'xls'):
+                if (request.FILES['fileupload-file'].name[-4:] == 'xlsx' or request.FILES['fileupload-file'].name[-3:] == 'xls' or request.FILES['fileupload-file'].name[-3:] == 'csv'):
                     message = import_excel(request.FILES['fileupload-file'])
                     if 'Successful' in message:
                         messages.success(request, f"{message}")
