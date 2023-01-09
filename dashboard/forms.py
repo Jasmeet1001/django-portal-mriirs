@@ -33,6 +33,7 @@ class AddPaper(forms.ModelForm):
     class Meta:
         model = ResearchPaper
         fields = [ 'faculty', 'authors', 'domain', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'student', 'scholar', 'month', 'year', 'doi', 'index_db']
+        labels = {'dept': 'Department', 'index_db': 'Index databse(SCOPUS, SCIE, ESCI, UGC CARE)'}
     
 class ImportFile(forms.Form):
     file = forms.FileField(label='')
