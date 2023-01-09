@@ -41,7 +41,7 @@ body {
 
   .custom-js-button:hover:after {
     position: absolute;
-    content: 'For\00a0 example:- faculty:FET,\00a0 dept:CSE';
+    content: 'For\00a0 example:- faculty:FET,\00a0 department:CSE';
     font-size: 16px;
     background-color: #EBF0F2;
     /* border: 1px solid #EBF0; */
@@ -75,7 +75,7 @@ body {
 
   .custom-imp-button:hover:after {
     position: absolute;
-    content: 'Columns to be included in respective order:-\A faculty;\00a0 authors;\00a0 outside\00a0 authors;\00a0 domain;\00a0 title\00a0 of\00a0 paper;\00a0 dept.;\00a0 name\00a0 of\00a0 journal;\00a0 name\00a0 of\00a0 conference;\00a0 title\00a0 of\00a0 book;\00a0 title\00a0 of\00a0 chapter; student;\00a0 scholar;\00a0 publication\00a0 month;\00a0 publication\00a0 year;\00a0 doi;\00a0 index\00a0 database\00a0 (SCOPUS,\00a0 SCIE,\00a0 ESCI,\00a0 UGC\00a0 CARE)';
+    content: 'Columns to be included in respective order:-\A faculty;\00a0 authors;\00a0 domain;\00a0 title\00a0 of\00a0 paper;\00a0 dept.;\00a0 name\00a0 of\00a0 journal;\00a0 name\00a0 of\00a0 conference;\00a0 title\00a0 of\00a0 book;\00a0 title\00a0 of\00a0 chapter; student;\00a0 scholar;\00a0 publication\00a0 month;\00a0 publication\00a0 year;\00a0 doi;\00a0 index\00a0 database\00a0 (SCOPUS,\00a0 SCIE,\00a0 ESCI,\00a0 UGC\00a0 CARE)';
     font-size: 12px;
     background-color: #EBF0F2;
     /* border: 1px solid #EBF0; */
