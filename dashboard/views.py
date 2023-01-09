@@ -67,7 +67,7 @@ def search():
                 paper_list = ResearchPaper.objects.filter(month__icontains=to_scr).order_by('-id')
             case 'year':
                 paper_list = ResearchPaper.objects.filter(year__icontains=to_scr).order_by('-id')
-            case 'scopus id':
+            case 'index db':
                 paper_list = ResearchPaper.objects.filter(index_db__icontains=to_scr).order_by('-id')
     
     return paper_list
