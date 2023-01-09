@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -21,55 +21,128 @@ class UpdatePaperView(LoginRequiredMixin, UpdateView):
     template_name = 'dashboard/paper_edit.html'
 
 def search():
-    SEARCH = SEARCH_UN.strip().split(':')
+    global SEARCH_UN
+    terms = SEARCH_UN.strip().split(',')
+    print('sc un', SEARCH_UN)
+    print('terms', terms)
+    print('len t', len(terms))
     paper_list = []
-    if len(SEARCH) == 1:
+    if len(terms) == 1 and ':' not in terms[0]:
+        print('yes')
+    # if len(SEARCH) == 1:
         paper_list = ResearchPaper.objects.filter(
-            Q(faculty__icontains=SEARCH[0]) | 
-            Q(authors__icontains=SEARCH[0]) | 
-            Q(title_of_paper__icontains=SEARCH[0]) | 
-            Q(dept__icontains=SEARCH[0]) | 
-            Q(name_of_journal__icontains=SEARCH[0]) | 
-            Q(name_of_conference__icontains=SEARCH[0]) | 
-            Q(title_of_book__icontains=SEARCH[0]) |
-            Q(title_of_chapter__icontains=SEARCH[0]) |
-            Q(scholar__icontains=SEARCH[0]) | 
-            Q(month__icontains=SEARCH[0]) |
-            Q(year__icontains=SEARCH[0]) |
-            Q(index_db__icontains=SEARCH[0])).order_by('-id')
+            Q(faculty__icontains=terms[0]) | 
+            Q(authors__icontains=terms[0]) | 
+            Q(title_of_paper__icontains=terms[0]) | 
+            Q(dept__icontains=terms[0]) | 
+            Q(name_of_journal__icontains=terms[0]) | 
+            Q(name_of_conference__icontains=terms[0]) | 
+            Q(title_of_book__icontains=terms[0]) |
+            Q(title_of_chapter__icontains=terms[0]) |
+            Q(scholar__icontains=terms[0]) | 
+            Q(month__icontains=terms[0]) |
+            Q(year__icontains=terms[0]) |
+            Q(index_db__icontains=terms[0])).order_by('-id')
 
-    elif len(SEARCH) == 2:
-        to_scr = SEARCH[1].strip()
-        match SEARCH[0].strip():
-            case 'faculty':
-                paper_list = ResearchPaper.objects.filter(faculty__icontains=to_scr).order_by('-id')
-            case 'authors':
-                paper_list = ResearchPaper.objects.filter(authors__icontains=to_scr).order_by('-id')
-            case 'domain':
-                paper_list = ResearchPaper.objects.filter(domain__icontains=to_scr).order_by('-id')
-            case 'title of paper':
-                paper_list = ResearchPaper.objects.filter(title_of_paper__icontains=to_scr).order_by('-id')
-            case 'department':
-                paper_list = ResearchPaper.objects.filter(dept__icontains=to_scr).order_by('-id')
-            case 'name of journal':
-                paper_list = ResearchPaper.objects.filter(name_of_journal__icontains=to_scr).order_by('-id')
-            case 'name of conference':
-                paper_list = ResearchPaper.objects.filter(name_of_conference__icontains=to_scr).order_by('-id')
-            case 'title of book':
-                paper_list = ResearchPaper.objects.filter(title_of_book__icontains=to_scr).order_by('-id')
-            case 'title of chapter':
-                paper_list = ResearchPaper.objects.filter(title_of_chapter__icontains=to_scr).order_by('-id')
-            case 'scholar':
-                paper_list = ResearchPaper.objects.filter(scholar__icontains=to_scr).order_by('-id')
-            case 'student':
-                paper_list = ResearchPaper.objects.filter(student__icontains=to_scr).order_by('-id')
-            case 'month':
-                paper_list = ResearchPaper.objects.filter(month__icontains=to_scr).order_by('-id')
-            case 'year':
-                paper_list = ResearchPaper.objects.filter(year__icontains=to_scr).order_by('-id')
-            case 'index db':
-                paper_list = ResearchPaper.objects.filter(index_db__icontains=to_scr).order_by('-id')
-    
+    elif len(terms) >= 1:
+        print('no')
+        query = []
+        for term in terms:
+            #faculty:FET,department:CSE
+            #['faculty:FET', 'department:CSE']
+
+            SEARCH = term.strip().split(':')
+            print('sear', SEARCH)
+            to_scr = SEARCH[1].strip()
+            print('to_sc', to_scr)
+            match SEARCH[0].strip():
+                case 'faculty':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(faculty__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(faculty__icontains=to_scr).order_by('-id') # type: ignore
+                 
+                case 'authors':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(authors__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(authors__icontains=to_scr).order_by('-id') # type: ignore
+                     
+                case 'domain':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(domain__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(domain__icontains=to_scr).order_by('-id') # type: ignore
+
+                    
+                case 'title of paper':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(title_of_paper__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(title_of_paper__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'department':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(dept__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(dept__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'name of journal':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(name_of_journal__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(name_of_journal__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'name of conference':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(name_of_conference__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(name_of_conference__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'title of book':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(title_of_book__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(title_of_book__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'title of chapter':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(title_of_chapter__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(title_of_chapter__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'scholar':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(scholar__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(scholar__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'student':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(student__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(student__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'month':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(month__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(month__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'year':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(year__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(year__icontains=to_scr).order_by('-id') # type: ignore
+                    
+                case 'index db':
+                    if query == []:
+                        query = ResearchPaper.objects.filter(index_db__icontains=to_scr).order_by('-id')
+                    else:
+                        query = query.filter(index_db__icontains=to_scr).order_by('-id') # type: ignore
+                    
+        paper_list = query
+    SEARCH_UN = ''
     return paper_list
 
 @login_required
@@ -78,58 +151,10 @@ def export_data(request):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename={uuid.uuid4()}.xlsx'
     object = []
-    # SEARCH = SEARCH_UN.strip().split(':')
     if SEARCH_UN == '':
         object = ResearchPaper.objects.all()
     else:
         object = search()
-        # if len(SEARCH) == 1:
-        #     object = ResearchPaper.objects.filter(
-        #         Q(faculty__icontains=SEARCH[0]) | 
-        #         Q(authors__icontains=SEARCH[0]) | 
-        #         Q(title_of_paper__icontains=SEARCH[0]) | 
-        #         Q(dept__icontains=SEARCH[0]) | 
-        #         Q(name_of_journal__icontains=SEARCH[0]) | 
-        #         Q(name_of_conference__icontains=SEARCH[0]) | 
-        #         Q(title_of_book__icontains=SEARCH[0]) |
-        #         Q(title_of_chapter__icontains=SEARCH[0]) |
-        #         Q(scholar__icontains=SEARCH[0]) | 
-        #         Q(student__icontains=SEARCH[0]) |
-        #         Q(month__icontains=SEARCH[0]) |
-        #         Q(year__icontains=SEARCH[0]) |
-        #         Q(index_db__icontains=SEARCH[0])).order_by('-id') 
-        # elif len(SEARCH) == 2:
-        #     to_search = SEARCH[1].strip()
-        #     match SEARCH[0].strip():
-        #         case 'faculty':
-        #             object = ResearchPaper.objects.filter(faculty__icontains=to_search).order_by('-id')
-        #         case 'authors':
-        #             object = ResearchPaper.objects.filter(authors__icontains=to_search).order_by('-id')
-        #         case 'domain':
-        #             object = ResearchPaper.objects.filter(domain__icontains=to_search).order_by('-id')
-        #         case 'title of paper':
-        #             object = ResearchPaper.objects.filter(title_of_paper__icontains=to_search).order_by('-id')
-        #         case 'department':
-        #             object = ResearchPaper.objects.filter(dept__icontains=to_search).order_by('-id')
-        #         case 'name of journal':
-        #             object = ResearchPaper.objects.filter(name_of_journal__icontains=to_search).order_by('-id')
-        #         case 'name of conference':
-        #             object = ResearchPaper.objects.filter(name_of_conference__icontains=to_search).order_by('-id')
-        #         case 'title of book':
-        #             object = ResearchPaper.objects.filter(title_of_book__icontains=to_search).order_by('-id')
-        #         case 'title of chapter':
-        #             object = ResearchPaper.objects.filter(title_of_chapter__icontains=to_search).order_by('-id')
-        #         case 'scholar':
-        #             object = ResearchPaper.objects.filter(scholar__icontains=to_search).order_by('-id')
-        #         case 'student':
-        #             object = ResearchPaper.objects.filter(student__icontains=to_search).order_by('-id')
-        #         case 'month':
-        #             object = ResearchPaper.objects.filter(month__icontains=to_search).order_by('-id')
-        #         case 'year':
-        #             object = ResearchPaper.objects.filter(year__icontains=to_search).order_by('-id')
-        #         case 'scopus id':
-        #             object = ResearchPaper.objects.filter(index_db__icontains=to_search).order_by('-id')
-
     data = []
 
     for obj in object:
@@ -159,7 +184,7 @@ def export_data(request):
 @login_required
 def homepage(request):
     global SEARCH_UN
-    SEARCH_UN = ''
+    # SEARCH_UN = ''
     if request.GET.get('search-result'):
         SEARCH_UN = request.GET.get('search-result')
     
@@ -184,7 +209,7 @@ def inj_view(request):
     if SEARCH_UN != '':
         paper_list = search()
     else:
-        paper_list = ResearchPaper.objects.filter(name_of_journal__exact='')
+        paper_list = ResearchPaper.objects.exclude(name_of_journal__exact='').order_by('-id')
 
     paginator = Paginator(paper_list, 10)
     page_number = request.GET.get('page')
@@ -197,9 +222,43 @@ def inj_view(request):
     }
     return render(request, 'dashboard/inj.html', context)
 
+@login_required
 def inc_view(request):
-    #Need name 
-    pass
+    #Need name of conference
+    if SEARCH_UN != '':
+        paper_list = search()
+    else:
+        paper_list = ResearchPaper.objects.exclude(name_of_conference__exact='').order_by('-id')
+
+    paginator = Paginator(paper_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'paper_count': len(paper_list),
+        'page_obj': page_obj,
+        'search': str(SEARCH_UN)
+    }
+    return render(request, 'dashboard/inc.html', context)
+
+@login_required
+def book_chapter_view(request):
+    #Need name of book and name of chapter
+    if SEARCH_UN != '':
+        paper_list = search()
+    else:
+        paper_list = ResearchPaper.objects.exclude(Q(title_of_book__exact='') | Q(title_of_chapter__exact='')).order_by('-id')
+
+    paginator = Paginator(paper_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'paper_count': len(paper_list),
+        'page_obj': page_obj,
+        'search': str(SEARCH_UN)
+    }
+    return render(request, 'dashboard/bkch.html', context)
 
 @login_required
 def my_papers(request, username):
