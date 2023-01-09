@@ -17,101 +17,12 @@ SEARCH_UN = ''
 
 class UpdatePaperView(LoginRequiredMixin, UpdateView):
     model = ResearchPaper
-    fields = [ 'faculty', 'authors', 'domain', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'student', 'scholar', 'month', 'year', 'doi', 'scopus_id']
+    fields = [ 'faculty', 'authors', 'domain', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'student', 'scholar', 'month', 'year', 'doi', 'index_db']
     template_name = 'dashboard/paper_edit.html'
 
-@login_required
-def export_data(request):
-    import uuid
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename={uuid.uuid4()}.xlsx'
-    object = []
+def search():
     SEARCH = SEARCH_UN.strip().split(':')
-    if SEARCH_UN == '':
-        object = ResearchPaper.objects.all()
-    else:
-        if len(SEARCH) == 1:
-            object = ResearchPaper.objects.filter(
-                Q(faculty__icontains=SEARCH[0]) | 
-                Q(authors__icontains=SEARCH[0]) | 
-                Q(title_of_paper__icontains=SEARCH[0]) | 
-                Q(dept__icontains=SEARCH[0]) | 
-                Q(name_of_journal__icontains=SEARCH[0]) | 
-                Q(name_of_conference__icontains=SEARCH[0]) | 
-                Q(title_of_book__icontains=SEARCH[0]) |
-                Q(title_of_chapter__icontains=SEARCH[0]) |
-                Q(scholar__icontains=SEARCH[0]) | 
-                Q(student__icontains=SEARCH[0]) |
-                Q(month__icontains=SEARCH[0]) |
-                Q(year__icontains=SEARCH[0]) |
-                Q(scopus_id__icontains=SEARCH[0])).order_by('-id') 
-        elif len(SEARCH) == 2:
-            to_search = SEARCH[1].strip()
-            match SEARCH[0].strip():
-                case 'faculty':
-                    object = ResearchPaper.objects.filter(faculty__icontains=to_search).order_by('-id')
-                case 'authors':
-                    object = ResearchPaper.objects.filter(authors__icontains=to_search).order_by('-id')
-                case 'domain':
-                    object = ResearchPaper.objects.filter(domain__icontains=to_search).order_by('-id')
-                case 'title of paper':
-                    object = ResearchPaper.objects.filter(title_of_paper__icontains=to_search).order_by('-id')
-                case 'department':
-                    object = ResearchPaper.objects.filter(dept__icontains=to_search).order_by('-id')
-                case 'name of journal':
-                    object = ResearchPaper.objects.filter(name_of_journal__icontains=to_search).order_by('-id')
-                case 'name of conference':
-                    object = ResearchPaper.objects.filter(name_of_conference__icontains=to_search).order_by('-id')
-                case 'title of book':
-                    object = ResearchPaper.objects.filter(title_of_book__icontains=to_search).order_by('-id')
-                case 'title of chapter':
-                    object = ResearchPaper.objects.filter(title_of_chapter__icontains=to_search).order_by('-id')
-                case 'scholar':
-                    object = ResearchPaper.objects.filter(scholar__icontains=to_search).order_by('-id')
-                case 'student':
-                    object = ResearchPaper.objects.filter(student__icontains=to_search).order_by('-id')
-                case 'month':
-                    object = ResearchPaper.objects.filter(month__icontains=to_search).order_by('-id')
-                case 'year':
-                    object = ResearchPaper.objects.filter(year__icontains=to_search).order_by('-id')
-                case 'scopus id':
-                    object = ResearchPaper.objects.filter(scopus_id__icontains=to_search).order_by('-id')
-
-    data = []
-
-    for obj in object:
-        data.append(
-            {
-                'faculty': obj.faculty,
-                'authors': obj.authors,
-                'domain': obj.domain,
-                'title of paper': obj.title_of_paper,
-                'dept.': obj.dept,
-                'name of journal': obj.name_of_journal,
-                'name of conference': obj.name_of_conference,
-                'title of book': obj.title_of_book,
-                'title of chapter': obj.title_of_chapter,
-                'student': obj.student,
-                'scholar': obj.scholar,
-                'month': obj.month,
-                'year': obj.year,
-                'doi': obj.doi,
-                'scopus_id': obj.scopus_id
-            }
-        )
-    df = pd.DataFrame(data)
-    df.to_excel(response, index=False)
-    return response
-
-@login_required
-def homepage(request):
-    global SEARCH_UN
-    SEARCH_UN = ''
-    if request.GET.get('search-result'):
-        SEARCH_UN = request.GET.get('search-result')
-    
     paper_list = []
-    SEARCH = SEARCH_UN.strip().split(':')
     if len(SEARCH) == 1:
         paper_list = ResearchPaper.objects.filter(
             Q(faculty__icontains=SEARCH[0]) | 
@@ -125,7 +36,7 @@ def homepage(request):
             Q(scholar__icontains=SEARCH[0]) | 
             Q(month__icontains=SEARCH[0]) |
             Q(year__icontains=SEARCH[0]) |
-            Q(scopus_id__icontains=SEARCH[0])).order_by('-id')
+            Q(index_db__icontains=SEARCH[0])).order_by('-id')
 
     elif len(SEARCH) == 2:
         to_scr = SEARCH[1].strip()
@@ -157,7 +68,102 @@ def homepage(request):
             case 'year':
                 paper_list = ResearchPaper.objects.filter(year__icontains=to_scr).order_by('-id')
             case 'scopus id':
-                paper_list = ResearchPaper.objects.filter(scopus_id__icontains=to_scr).order_by('-id')
+                paper_list = ResearchPaper.objects.filter(index_db__icontains=to_scr).order_by('-id')
+    
+    return paper_list
+
+@login_required
+def export_data(request):
+    import uuid
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={uuid.uuid4()}.xlsx'
+    object = []
+    # SEARCH = SEARCH_UN.strip().split(':')
+    if SEARCH_UN == '':
+        object = ResearchPaper.objects.all()
+    else:
+        object = search()
+        # if len(SEARCH) == 1:
+        #     object = ResearchPaper.objects.filter(
+        #         Q(faculty__icontains=SEARCH[0]) | 
+        #         Q(authors__icontains=SEARCH[0]) | 
+        #         Q(title_of_paper__icontains=SEARCH[0]) | 
+        #         Q(dept__icontains=SEARCH[0]) | 
+        #         Q(name_of_journal__icontains=SEARCH[0]) | 
+        #         Q(name_of_conference__icontains=SEARCH[0]) | 
+        #         Q(title_of_book__icontains=SEARCH[0]) |
+        #         Q(title_of_chapter__icontains=SEARCH[0]) |
+        #         Q(scholar__icontains=SEARCH[0]) | 
+        #         Q(student__icontains=SEARCH[0]) |
+        #         Q(month__icontains=SEARCH[0]) |
+        #         Q(year__icontains=SEARCH[0]) |
+        #         Q(index_db__icontains=SEARCH[0])).order_by('-id') 
+        # elif len(SEARCH) == 2:
+        #     to_search = SEARCH[1].strip()
+        #     match SEARCH[0].strip():
+        #         case 'faculty':
+        #             object = ResearchPaper.objects.filter(faculty__icontains=to_search).order_by('-id')
+        #         case 'authors':
+        #             object = ResearchPaper.objects.filter(authors__icontains=to_search).order_by('-id')
+        #         case 'domain':
+        #             object = ResearchPaper.objects.filter(domain__icontains=to_search).order_by('-id')
+        #         case 'title of paper':
+        #             object = ResearchPaper.objects.filter(title_of_paper__icontains=to_search).order_by('-id')
+        #         case 'department':
+        #             object = ResearchPaper.objects.filter(dept__icontains=to_search).order_by('-id')
+        #         case 'name of journal':
+        #             object = ResearchPaper.objects.filter(name_of_journal__icontains=to_search).order_by('-id')
+        #         case 'name of conference':
+        #             object = ResearchPaper.objects.filter(name_of_conference__icontains=to_search).order_by('-id')
+        #         case 'title of book':
+        #             object = ResearchPaper.objects.filter(title_of_book__icontains=to_search).order_by('-id')
+        #         case 'title of chapter':
+        #             object = ResearchPaper.objects.filter(title_of_chapter__icontains=to_search).order_by('-id')
+        #         case 'scholar':
+        #             object = ResearchPaper.objects.filter(scholar__icontains=to_search).order_by('-id')
+        #         case 'student':
+        #             object = ResearchPaper.objects.filter(student__icontains=to_search).order_by('-id')
+        #         case 'month':
+        #             object = ResearchPaper.objects.filter(month__icontains=to_search).order_by('-id')
+        #         case 'year':
+        #             object = ResearchPaper.objects.filter(year__icontains=to_search).order_by('-id')
+        #         case 'scopus id':
+        #             object = ResearchPaper.objects.filter(index_db__icontains=to_search).order_by('-id')
+
+    data = []
+
+    for obj in object:
+        data.append(
+            {
+                'faculty': obj.faculty,
+                'authors': obj.authors,
+                'domain': obj.domain,
+                'title of paper': obj.title_of_paper,
+                'dept.': obj.dept,
+                'name of journal': obj.name_of_journal,
+                'name of conference': obj.name_of_conference,
+                'title of book': obj.title_of_book,
+                'title of chapter': obj.title_of_chapter,
+                'student': obj.student,
+                'scholar': obj.scholar,
+                'month': obj.month,
+                'year': obj.year,
+                'doi': obj.doi,
+                'index database': obj.index_db
+            }
+        )
+    df = pd.DataFrame(data)
+    df.to_excel(response, index=False)
+    return response
+
+@login_required
+def homepage(request):
+    global SEARCH_UN
+    SEARCH_UN = ''
+    if request.GET.get('search-result'):
+        SEARCH_UN = request.GET.get('search-result')
+    
+    paper_list = search()
 
     # # paper_all = ResearchPaper.objects.all().order_by('-id')
     paginator = Paginator(paper_list, 10)
@@ -171,6 +177,10 @@ def homepage(request):
         'search': str(SEARCH_UN)
     }
     return render(request, 'dashboard/home.html', context)
+
+# @login_required
+# def inj_view(request):
+
 
 @login_required
 def my_papers(request, username):
