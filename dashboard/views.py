@@ -142,7 +142,7 @@ def search():
                         query = query.filter(index_db__icontains=to_scr).order_by('-id') # type: ignore
                     
         paper_list = query
-    SEARCH_UN = ''
+    # SEARCH_UN = ''
     return paper_list
 
 @login_required
@@ -155,8 +155,8 @@ def export_data(request):
         object = ResearchPaper.objects.all()
     else:
         object = search()
+    print(object)
     data = []
-
     for obj in object:
         data.append(
             {
@@ -184,7 +184,7 @@ def export_data(request):
 @login_required
 def homepage(request):
     global SEARCH_UN
-    # SEARCH_UN = ''
+    SEARCH_UN = ''
     if request.GET.get('search-result'):
         SEARCH_UN = request.GET.get('search-result')
     
@@ -206,10 +206,10 @@ def homepage(request):
 @login_required
 def inj_view(request):
     #Need name of journal column
-    if SEARCH_UN != '':
-        paper_list = search()
-    else:
-        paper_list = ResearchPaper.objects.exclude(name_of_journal__exact='').order_by('-id')
+    # if SEARCH_UN != '':
+    #     paper_list = search()
+    # else:
+    paper_list = ResearchPaper.objects.exclude(name_of_journal__exact='').order_by('-id')
 
     paginator = Paginator(paper_list, 10)
     page_number = request.GET.get('page')
@@ -225,10 +225,10 @@ def inj_view(request):
 @login_required
 def inc_view(request):
     #Need name of conference
-    if SEARCH_UN != '':
-        paper_list = search()
-    else:
-        paper_list = ResearchPaper.objects.exclude(name_of_conference__exact='').order_by('-id')
+    # if SEARCH_UN != '':
+    #     paper_list = search()
+    # else:
+    paper_list = ResearchPaper.objects.exclude(name_of_conference__exact='').order_by('-id')
 
     paginator = Paginator(paper_list, 10)
     page_number = request.GET.get('page')
@@ -244,10 +244,10 @@ def inc_view(request):
 @login_required
 def book_chapter_view(request):
     #Need name of book and name of chapter
-    if SEARCH_UN != '':
-        paper_list = search()
-    else:
-        paper_list = ResearchPaper.objects.exclude(Q(title_of_book__exact='') | Q(title_of_chapter__exact='')).order_by('-id')
+    # if SEARCH_UN != '':
+    #     paper_list = search()
+    # else:
+    paper_list = ResearchPaper.objects.exclude(Q(title_of_book__exact='') | Q(title_of_chapter__exact='')).order_by('-id')
 
     paginator = Paginator(paper_list, 10)
     page_number = request.GET.get('page')
