@@ -1,0 +1,107 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %} 
+    <title>Journal's Data</title>
+{% endblock title %}
+
+{% block main %}
+{% if page_obj %}
+<h2 class="h3 display-6">Research Papers - {{paper_count}}</h2>
+<br>
+<div class="card card-body border-0 table-wrapper table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+            <th scope="col">Faculty</th>
+            <th scope="col">Authors</th>
+            <th scope="col">Domain</th>
+            <th scope="col">Title of Paper</th>
+            <th scope="col">Department</th>
+            <th scope="col">Name of Journal</th>
+            <!-- <th scope="col">Name of Conference</th> -->
+            <!-- <th scope="col">Title of Book</th> -->
+            <!-- <th scope="col">Title of Chapter</th> -->
+            <th scope="col">Student</th>
+            <th scope="col">Scholar</th>
+            <th scope="col">Month of Publish</th>
+            <th scope="col">Year of Publish</th>
+            <th scope="col">DOI</th>
+            <th scope="col">Index Database</th>
+            <th scope="col">Change Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for paper in page_obj %}
+            <tr>
+                <td>{{ paper.faculty }}</td>
+                <td>{{ paper.authors }}</td>
+                <td>{{ paper.domain }}</td>
+                <td>{{ paper.title_of_paper }}</td>
+                <td>{{ paper.dept }}</td>
+                <td>{{ paper.name_of_journal }}</td>
+                <!-- <td>{{ paper.conference }}</td> -->
+                <!-- <td>{{ paper.title_of_book }}</td> -->
+                <!-- <td>{{ paper.title_of_chapter }}</td> -->
+                <td>{{ paper.student }}</td>
+                <td>{{ paper.scholar }}</td>
+                <td>{{ paper.month }}</td>
+
+                {% if paper.year != None %}
+                    <td>{{ paper.year }}</td>
+                {% else %}
+                    <td>  </td>
+                {% endif %}
+                
+                {% if paper.doi != '' %}
+                    <td><a href="{{ paper.doi }}" target="_blank">{{ paper.doi }}</a></td>
+                {% else %}
+                    <td>  </td>
+                {% endif %}
+
+                <td>{{ paper.index_db }}</td>
+
+                <td>
+                    <button type="button" class="btn btn-link btn-sm">
+                        <a href="{% url 'dashboard-edit' paper.id %}">Edit</a>
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="py-2 px-2 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+        <nav class="">
+            <ul class="pagination mb-0">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link link-dark" href="?{% if search %}search-result={{ search }}&{% endif %}page=1">First</a></li>
+                <li class="page-item"><a class="page-link link-dark" href="?{% if search %}search-result={{ search }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active"><a class="page-link link-dark" href="?{% if search %}search-result={{ search }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link link-dark" href="?{% if search %}search-result={{ search }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link link-dark" href="?{% if search %}search-result={{ search }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link link-dark" href="?{% if search %}search-result={{ search }}&{% endif %}page={{ page_obj.paginator.num_pages }}">Last</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            {% endif %}
+            </ul>
+        </nav>
+        <div class="fw-normal small mt-4 mt-lg-0">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </div>
+    </div>
+</div>
+{% else %}
+    <h3 class="display-6 text-left pb-5">No Research Papers Found</h3>
+{% endif %}
+{% endblock main %}
