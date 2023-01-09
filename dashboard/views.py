@@ -178,9 +178,28 @@ def homepage(request):
     }
     return render(request, 'dashboard/home.html', context)
 
-# @login_required
-# def inj_view(request):
+@login_required
+def inj_view(request):
+    #Need name of journal column
+    if SEARCH_UN != '':
+        paper_list = search()
+    else:
+        paper_list = ResearchPaper.objects.filter(name_of_journal__exact='')
 
+    paginator = Paginator(paper_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'paper_count': len(paper_list),
+        'page_obj': page_obj,
+        'search': str(SEARCH_UN)
+    }
+    return render(request, 'dashboard/inj.html', context)
+
+def inc_view(request):
+    #Need name 
+    pass
 
 @login_required
 def my_papers(request, username):
@@ -221,7 +240,7 @@ def add_new(request):
                     else:
                         messages.error(request, f"{message}")
                 else:
-                    messages.error(request, "Invalid file type! Only xlsx or xls formats are supported.")
+                    messages.error(request, "Invalid file type! Only xlsx, xls or csv formats are supported.")
             
         elif 'add-details' in request.POST:
             addpaper_form = AddPaper(request.POST, prefix='singleupload')
