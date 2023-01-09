@@ -6,9 +6,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.homepage, name='dashboard-home'),
-    # path('inj/', views.inj_view, name='dashboard-inj'),
-    # path('inc/', views.inc_view, name='dashboard-inc'),
-    # path('bkch/', views.book_chapter_view, name='dashboard-bkch'),
+    path('inj/', views.inj_view, name='dashboard-inj'),
+    path('inc/', views.inc_view, name='dashboard-inc'),
+    path('bkch/', views.book_chapter_view, name='dashboard-bkch'),
     path('paper/new/', views.add_new, name='dashboard-addpaper'),
     path('paper/<int:pk>/edit/', UpdatePaperView.as_view(), name='dashboard-edit'),
     path('paper/export', views.export_data, name='dashboard-export'),
