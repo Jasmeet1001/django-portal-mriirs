@@ -15,7 +15,81 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
   }
-  
+
+  .custom-js-hover {
+    display: flex;
+    width: 100%;
+  }
+
+  .custom-js-button p {
+    font-size: 10px;
+  }
+
+
+  .custom-js-button {
+    background-color: yellow;
+    border: 1px solid black;
+    /* opacity: 50%;  */
+    width: 20px; 
+    height: 20px;
+    border-radius: 50%;
+    font-weight: bold; 
+    margin-left: 10px; 
+    margin-top: 6px;
+    position: relative;
+  }
+
+  .custom-js-button:hover:after {
+    position: absolute;
+    content: 'For\00a0 example:- faculty:FET,\00a0 dept:CSE';
+    font-size: 16px;
+    background-color: #EBF0F2;
+    /* border: 1px solid #EBF0; */
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+    /* display: block; */
+    font-weight: normal;
+    top: 0px;
+    left: 25px;
+    /* width: 850%; */
+    text-align: left;
+  }
+
+  .custom-imp-button {
+    background-color: yellow;
+    border: 1px solid black;
+    /* opacity: 50%;  */
+    width: 20px; 
+    height: 20px;
+    border-radius: 50%;
+    font-weight: bold; 
+    margin-left: 10px; 
+    margin-top: 6px;
+    position: relative;
+  }
+
+  .custom-imp-button p {
+    font-size: 10px;
+  }
+
+  .custom-imp-button:hover:after {
+    position: absolute;
+    content: 'Columns to be included in respective order:-\A faculty;\00a0 authors;\00a0 outside\00a0 authors;\00a0 domain;\00a0 title\00a0 of\00a0 paper;\00a0 dept.;\00a0 name\00a0 of\00a0 journal;\00a0 name\00a0 of\00a0 conference;\00a0 title\00a0 of\00a0 book;\00a0 title\00a0 of\00a0 chapter; student;\00a0 scholar;\00a0 publication\00a0 month;\00a0 publication\00a0 year;\00a0 doi;\00a0 index\00a0 database\00a0 (SCOPUS,\00a0 SCIE,\00a0 ESCI,\00a0 UGC\00a0 CARE)';
+    font-size: 12px;
+    background-color: #EBF0F2;
+    /* border: 1px solid #EBF0; */
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+    /* display: block; */
+    font-weight: normal;
+    top: 0px;
+    left: 25px;
+    /* width: 850%; */
+    text-align: left;
+  }
+
   .dropdown-toggle { outline: 0; }
   
   .btn-toggle {
