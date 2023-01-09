@@ -26,15 +26,21 @@
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li>
-                        <a href="#" class="nav-link active" aria-current="page">
-                            International Journal
-                        </a>
+                            <a href="#" class="nav-link link-dark">
+                                International/National Journal
+                            </a>
                         </li>
                         <li class="nav-item">
-                        <a href="#" class="nav-link link-dark">
-                        <a href="#" class="nav-link link-dark" aria-current="page">
-                            National Journal
-                        </a>
+                            <a href="#" class="nav-link link-dark">
+                            <!-- <a href="#" class="nav-link active" aria-current="page"> -->
+                                International/National Conference
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link link-dark">
+                            <!-- <a href="#" class="nav-link active" aria-current="page"> -->
+                                Book/Chapter
+                            </a>
                         </li>
                         <!-- <li>
                         <a href="#" class="nav-link link-dark">
@@ -56,9 +62,14 @@
                 </div>
                 <div class="col-10 ms-auto p-3 mb-3">
                     <div id="navbar-main" class="d-flex flex-wrap align-items-center justify-content-between">
-                        <form method="GET" id="search-bar" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 px-2" role="search" action="{% url 'dashboard-home' %}">
-                        <input name="search-result" id="search-input" type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                        <form method="GET" id="search-bar" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 px-2 custom-js-hover" role="search" action="{% url 'dashboard-home' %}">
+                            <div class="custom-js-hover" >
+                                <input name="search-result" id="search-input" type="search" class="form-control "  placeholder="Search..." aria-label="Search" > 
+                                <button type="button" class="custom-js-button" > <p>!</p> </button>
+                            </div>
                         </form>
+                        <!-- <input name="search-result" id="search-input" type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                        </form> -->
                         <div class="row align-items-start">
                             <div class="col">
                                 <a id="add-paper-btn" href="{% url 'dashboard-addpaper' %}" class="btn btn-dark" role="button">Add New</a>
