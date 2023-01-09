@@ -15,6 +15,7 @@
         <tr>
             <th scope="col">Faculty</th>
             <th scope="col">Authors</th>
+            <!-- <th scope="col">Outside Author</th> -->
             <th scope="col">Domain</th>
             <th scope="col">Title of Paper</th>
             <th scope="col">Department</th>
@@ -27,7 +28,7 @@
             <th scope="col">Month of Publish</th>
             <th scope="col">Year of Publish</th>
             <th scope="col">DOI</th>
-            <th scope="col">Scopus ID</th>
+            <th scope="col">Index Database</th>
             <th scope="col">Change Details</th>
         </tr>
       </thead>
@@ -36,6 +37,9 @@
             <tr>
                 <td>{{ paper.faculty }}</td>
                 <td>{{ paper.authors }}</td>
+                <!-- Add outside author here -->
+                <!-- <td>{{ paper.authors }}</td> -->
+                <!--  -->
                 <td>{{ paper.domain }}</td>
                 <td>{{ paper.title_of_paper }}</td>
                 <td>{{ paper.dept }}</td>
@@ -59,7 +63,8 @@
                     <td>  </td>
                 {% endif %}
 
-                <td>{{ paper.scopus_id }}</td>
+                <!-- Instead of scopus id make it Index Database -->
+                <td>{{ paper.index_db }}</td>
 
                 <td>
                     <button type="button" class="btn btn-link btn-sm">
