@@ -52,6 +52,8 @@ def export_data(request):
                     object = ResearchPaper.objects.filter(faculty__icontains=to_search).order_by('-id')
                 case 'authors':
                     object = ResearchPaper.objects.filter(authors__icontains=to_search).order_by('-id')
+                case 'domain':
+                    object = ResearchPaper.objects.filter(domain__icontains=to_search).order_by('-id')
                 case 'title of paper':
                     object = ResearchPaper.objects.filter(title_of_paper__icontains=to_search).order_by('-id')
                 case 'department':
@@ -82,6 +84,7 @@ def export_data(request):
             {
                 'faculty': obj.faculty,
                 'authors': obj.authors,
+                'domain': obj.domain,
                 'title of paper': obj.title_of_paper,
                 'dept.': obj.dept,
                 'name of journal': obj.name_of_journal,
@@ -131,6 +134,8 @@ def homepage(request):
                 paper_list = ResearchPaper.objects.filter(faculty__icontains=to_scr).order_by('-id')
             case 'authors':
                 paper_list = ResearchPaper.objects.filter(authors__icontains=to_scr).order_by('-id')
+            case 'domain':
+                paper_list = ResearchPaper.objects.filter(domain__icontains=to_scr).order_by('-id')
             case 'title of paper':
                 paper_list = ResearchPaper.objects.filter(title_of_paper__icontains=to_scr).order_by('-id')
             case 'department':
