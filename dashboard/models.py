@@ -62,7 +62,7 @@ class ResearchPaper(models.Model):
     month = models.CharField(max_length=15, blank=True)
     year = models.CharField(max_length=15, blank=True)
     doi = models.URLField(blank=True)
-    scopus_id = models.CharField(max_length=50, blank=True)
+    index_db = models.CharField(max_length=50, blank=True)
     
     def __str__(self):
         return f'{self.authors} {self.title_of_paper} {self.month} {self.year}'

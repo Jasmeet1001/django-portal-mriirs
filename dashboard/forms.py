@@ -32,7 +32,7 @@ class AddPaper(forms.ModelForm):
     # year = forms.TypedChoiceField(coerce=int, choices=year_choices, initial=current_year, required=False)
     class Meta:
         model = ResearchPaper
-        fields = [ 'faculty', 'authors', 'domain', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'student', 'scholar', 'month', 'year', 'doi', 'scopus_id']
+        fields = [ 'faculty', 'authors', 'domain', 'title_of_paper', 'dept', 'name_of_journal', 'name_of_conference', 'title_of_book', 'title_of_chapter', 'student', 'scholar', 'month', 'year', 'doi', 'index_db']
     
 class ImportFile(forms.Form):
     file = forms.FileField(label='')
