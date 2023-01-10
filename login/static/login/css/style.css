@@ -4,10 +4,27 @@
     overflow-y: auto;
 }
 
-html {
-    scrollbar-width: none;
+.login-page::-webkit-scrollbar {
+    width: 0.8vw;
 }
-    
+
+.login-page::-webkit-scrollbar-thumb {
+    background-color: #5438DC;
+    border: .125em solid #DEDCDC;
+    border-radius: 100vw;
+}
+ 
+.login-page::-webkit-scrollbar-thumb:hover {
+    background-color: #5438DC;
+}
+
+.login-page::-webkit-scrollbar-track {
+    border-radius: 100vw;
+    /* margin-block: .5em; */
+    margin: 1em 1em;
+    background-color: #DEDCDC;
+}
+
 .main-wrapper {
     display: flex;
 
