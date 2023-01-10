@@ -12,6 +12,8 @@ from .forms import UserUpdateForm, ProfileUpdateForm, AddPaper, ImportFile, Addi
 
 from .imp_exp import import_excel, pd
 
+import uuid
+
 # Create your views here.
 SEARCH_UN = ''
 
@@ -22,7 +24,7 @@ class UpdatePaperView(LoginRequiredMixin, UpdateView):
 
 def search():
     global SEARCH_UN
-    terms = SEARCH_UN.strip().split(',')
+    terms = SEARCH_UN.strip().split(';')
     print('sc un', SEARCH_UN)
     print('terms', terms)
     print('len t', len(terms))
@@ -73,8 +75,7 @@ def search():
                         query = ResearchPaper.objects.filter(domain__icontains=to_scr).order_by('-id')
                     else:
                         query = query.filter(domain__icontains=to_scr).order_by('-id') # type: ignore
-
-                    
+ 
                 case 'title of paper':
                     if query == []:
                         query = ResearchPaper.objects.filter(title_of_paper__icontains=to_scr).order_by('-id')
@@ -147,7 +148,6 @@ def search():
 
 @login_required
 def export_data(request):
-    import uuid
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename={uuid.uuid4()}.xlsx'
     object = []
@@ -162,6 +162,7 @@ def export_data(request):
             {
                 'faculty': obj.faculty,
                 'authors': obj.authors,
+                'outside author': '',
                 'domain': obj.domain,
                 'title of paper': obj.title_of_paper,
                 'dept.': obj.dept,
@@ -178,6 +179,18 @@ def export_data(request):
             }
         )
     df = pd.DataFrame(data)
+    df.to_excel(response, index=False)
+    return response
+
+@login_required
+def template_download(request):
+    # if 'template' in request.POST:
+    filename = 'sample_template'
+    col_include = [ 'faculty', 'authors', 'outside author', 'domain', 'title of paper', 'dept.', 'name of journal', 'name of conference', 'title of book', 'title of chapter', 'student', 'scholar', 'publication month', 'publication year', 'doi', 'index database']
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
+    df = pd.DataFrame(columns=col_include)
     df.to_excel(response, index=False)
     return response
 
