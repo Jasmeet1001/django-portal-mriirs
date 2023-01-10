@@ -51,7 +51,7 @@ def search():
             #faculty:FET,department:CSE
             #['faculty:FET', 'department:CSE']
 
-            SEARCH = term.strip().split(':')
+            SEARCH = term.strip().split(';')
             print('sear', SEARCH)
             to_scr = SEARCH[1].strip()
             print('to_sc', to_scr)
