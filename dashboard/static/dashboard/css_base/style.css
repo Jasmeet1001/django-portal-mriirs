@@ -39,7 +39,7 @@ body {
 
   .custom-js-button:hover:after {
     position: absolute;
-    content: 'For\00a0 example:- faculty:FET;\00a0 department;CSE,\00a0 year;2020';
+    content: 'For\00a0 example:- faculty:FET;\00a0 department:CSE;\00a0 year:2020';
     font-size: 16px;
     background-color: #EBF0F2;
     /* border: 1px solid #EBF0; */

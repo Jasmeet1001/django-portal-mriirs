@@ -11,8 +11,8 @@ def import_excel(file):
         filename = f"{filename.split('.')[0]}.xlsx"
 
     col_include = [ 'faculty', 'authors', 'outside author', 'domain', 'title of paper', 'dept.', 'name of journal', 'name of conference', 'title of book', 'title of chapter', 'student', 'scholar', 'publication month', 'publication year', 'doi', 'index database']
-    try:
-        with pd.ExcelFile(f'./media/{filename}') as file_to_load:
+    # try:
+    with pd.ExcelFile(f'./media/{filename}') as file_to_load:
             for sheet in file_to_load.sheet_names:
                 data = pd.read_excel(f'./media/{filename}', sheet_name=sheet)
                 data_new = data.dropna(how="all").fillna('')[col_include]
@@ -27,12 +27,12 @@ def import_excel(file):
 
                     tbl_val.save()
 
-        fs.delete(file.name)
-        fs.delete(filename)
-        success_message = 'Upload Successful. Details Added.'
-        return success_message
-    except:
-        fs.delete(file.name)
-        fs.delete(filename)
-        error_message = 'Upload Failed. Please check content format.'
-        return error_message
+    fs.delete(file.name)
+    fs.delete(filename)
+    success_message = 'Upload Successful. Details Added.'
+    return success_message 
+    # except:
+        # fs.delete(file.name)
+        # fs.delete(filename)
+        # error_message = 'Upload Failed. Please check content format.'
+        # return error_message

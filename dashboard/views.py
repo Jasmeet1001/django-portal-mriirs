@@ -22,7 +22,7 @@ class UpdatePaperView(LoginRequiredMixin, UpdateView):
 
 def search():
     global SEARCH_UN
-    terms = SEARCH_UN.strip().split(',')
+    terms = SEARCH_UN.strip().split(';')
     print('sc un', SEARCH_UN)
     print('terms', terms)
     print('len t', len(terms))
@@ -51,7 +51,7 @@ def search():
             #faculty:FET,department:CSE
             #['faculty:FET', 'department:CSE']
 
-            SEARCH = term.strip().split(';')
+            SEARCH = term.strip().split(':')
             print('sear', SEARCH)
             to_scr = SEARCH[1].strip()
             print('to_sc', to_scr)
