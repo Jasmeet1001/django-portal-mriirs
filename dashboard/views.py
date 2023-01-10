@@ -162,7 +162,6 @@ def export_data(request):
             {
                 'faculty': obj.faculty,
                 'authors': obj.authors,
-                'outside author': '',
                 'domain': obj.domain,
                 'title of paper': obj.title_of_paper,
                 'dept.': obj.dept,
@@ -172,8 +171,8 @@ def export_data(request):
                 'title of chapter': obj.title_of_chapter,
                 'student': obj.student,
                 'scholar': obj.scholar,
-                'month': obj.month,
-                'year': obj.year,
+                'publication month': obj.month,
+                'publication year': obj.year,
                 'doi': obj.doi,
                 'index database': obj.index_db
             }
