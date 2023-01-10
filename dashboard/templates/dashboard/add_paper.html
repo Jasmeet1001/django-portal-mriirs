@@ -28,11 +28,12 @@
                     <div class="form-group mb-2 py-3">
                         {{ fileupload_form|crispy }}
                     </div>
-                    <div class="custom-js-hover">
-                        <button type="submit" class="btn btn-primary" name="import">Import</button>
-                        <div class="custom-imp-button" > 
-                            <p>!</p> 
-                        </div>
+                    <button type="submit" class="btn btn-primary" name="import">Import</button>
+                </form>
+                <form action="POST" enctype="multipart/form-data" style="padding-top: 10px;" >
+                    {% csrf_token %}
+                    <div class="col">
+                        <button name="template" class="btn btn-primary" type="submit" formaction="{% url 'dashboard-template' %}">Download Template</button>
                     </div>
                 </form>
             </div>
