@@ -8,8 +8,19 @@
     display: flex;
     /* justify-content: space-between; */
     /* align-items: center; */
+    position: relative;
 }
 
+.jasmeet::after {
+    content: 'MRIIRS Publication Explorar';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    font-size: 64px;
+    color: #fff;
+    font-weight: bold;
+    
+}
 
 
 .sainsh {
@@ -28,6 +39,7 @@
     /* justify-content: flex-end; */
     align-items: center;
     /* background-color: red; */
+    /* border: 10px solid black; */
     position: relative;
 }
 
