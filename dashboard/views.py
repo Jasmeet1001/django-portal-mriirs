@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Q, QuerySet
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -25,12 +25,8 @@ class UpdatePaperView(LoginRequiredMixin, UpdateView):
 def search():
     global SEARCH_UN
     terms = SEARCH_UN.strip().split(';')
-    print('sc un', SEARCH_UN)
-    print('terms', terms)
-    print('len t', len(terms))
     paper_list = []
     if len(terms) == 1 and ':' not in terms[0]:
-        print('yes')
     # if len(SEARCH) == 1:
         paper_list = ResearchPaper.objects.filter(
             Q(faculty__icontains=terms[0]) | 
@@ -47,16 +43,13 @@ def search():
             Q(index_db__icontains=terms[0])).order_by('-id')
 
     elif len(terms) >= 1:
-        print('no')
         query = []
         for term in terms:
             #faculty:FET,department:CSE
             #['faculty:FET', 'department:CSE']
 
             SEARCH = term.strip().split(':')
-            print('sear', SEARCH)
             to_scr = SEARCH[1].strip()
-            print('to_sc', to_scr)
             match SEARCH[0].strip():
                 case 'faculty':
                     if query == []:
@@ -143,7 +136,6 @@ def search():
                         query = query.filter(index_db__icontains=to_scr).order_by('-id') # type: ignore
                     
         paper_list = query
-    # SEARCH_UN = ''
     return paper_list
 
 @login_required
@@ -155,7 +147,6 @@ def export_data(request):
         object = ResearchPaper.objects.all()
     else:
         object = search()
-    print(object)
     data = []
     for obj in object:
         data.append(
