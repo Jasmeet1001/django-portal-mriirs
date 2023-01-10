@@ -3,6 +3,11 @@
   margin: 0;
 }
 
+* {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   min-height: 100vh;
   /* min-height: -webkit-fill-available; */
@@ -177,6 +182,10 @@ main {
   display: flex;
   width: 100%;
 }  
+.custom-js-hover {
+  display: flex;
+  width: 100%;
+}  
 
 
 .custom-js-button {
@@ -192,7 +201,36 @@ main {
   margin-top: 6px;
   position: relative;
 } 
+.custom-js-button {
+  cursor: help;
+  background-color: yellow;
+  border: 1px solid black;
+  /* opacity: 50%;  */
+  width: 20px; 
+  height: 20px;
+  border-radius: 50%;
+  font-weight: bold; 
+  margin-left: 10px; 
+  margin-top: 6px;
+  position: relative;
+} 
 
+.custom-js-button:hover:after {
+  position: absolute;
+  content: 'For\00a0 example:- faculty:FET;\00a0 department;CSE,\00a0 year;2020';
+  font-size: 16px;
+  background-color: #EBF0F2;
+  /* border: 1px solid #EBF0; */
+  border: 1px solid black;
+  padding-left: 5px;
+  padding-right: 5px;
+  /* display: block; */
+  font-weight: normal;
+  top: 0px;
+  left: 25px;
+  /* width: 850%; */
+  text-align: left;
+}
 .custom-js-button:hover:after {
   position: absolute;
   content: 'For\00a0 example:- faculty:FET;\00a0 department;CSE,\00a0 year;2020';
