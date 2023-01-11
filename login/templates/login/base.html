@@ -14,17 +14,19 @@
     <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
 </head>
 <body>
+    <div class="main-wrapper-bg">
+        <img class="img-fluid" src="{% static 'login/img/mr-bg.jpg' %}"  alt="mr-bg">           
+    </div>
     <section class="main-wrapper">
-        <div class="main-wrapper-bg">
-            <img class="img-fluid" src="{% static 'login/img/mr-bg.jpg' %}"  alt="mr-bg">           
+        <div class="login-page-wrapper">
+            <img class="img-fluid" src="{% static 'login/img/mr-logo.png' %}" style="width: 185px;" alt="mr-logo">
+            <h2>MRIIRS Publication Explorer</h2>
         </div>
         <div class="login-page">
-            <h2>MRIIRS Publication Explorar</h2>
             <div class="rounded-3 text-black login-form" >
                     <div class="">
                         {% block txtcntr %}{% endblock %}
                             <div class="text-center">
-                                <img class="img-fluid" src="{% static 'login/img/mr-logo.png' %}" style="width: 185px;" alt="mr-logo">
                                 <h4><br></h4>
                             </div>  
                             
