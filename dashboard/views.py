@@ -8,7 +8,8 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 
 from .models import ResearchPaper
-from .forms import UserUpdateForm, ProfileUpdateForm, AddPaper, ImportFile, AdditionalInfoUpdateForm
+from .forms import UserUpdateForm, ProfileUpdateForm, AddPaper, ImportFile
+# , AdditionalInfoUpdateForm
 
 from .imp_exp import import_excel, pd
 
@@ -153,6 +154,7 @@ def export_data(request):
             {
                 'faculty': obj.faculty,
                 'authors': obj.authors,
+                'outside author': '',
                 'domain': obj.domain,
                 'title of paper': obj.title_of_paper,
                 'dept.': obj.dept,
@@ -222,7 +224,7 @@ def inj_view(request):
         'page_obj': page_obj,
         'search': str(SEARCH_UN)
     }
-    return render(request, 'dashboard/inj.html', context)
+    return render(request, 'dashboard/home.html', context)
 
 @login_required
 def inc_view(request):
@@ -241,7 +243,7 @@ def inc_view(request):
         'page_obj': page_obj,
         'search': str(SEARCH_UN)
     }
-    return render(request, 'dashboard/inc.html', context)
+    return render(request, 'dashboard/home.html', context)
 
 @login_required
 def book_chapter_view(request):
@@ -260,7 +262,7 @@ def book_chapter_view(request):
         'page_obj': page_obj,
         'search': str(SEARCH_UN)
     }
-    return render(request, 'dashboard/bkch.html', context)
+    return render(request, 'dashboard/home.html', context)
 
 @login_required
 def my_papers(request, username):
@@ -324,24 +326,20 @@ def add_new(request):
 @login_required
 def profile_view(request, username):
     if request.method == 'POST':
-        additional_info = AdditionalInfoUpdateForm(request.POST, instance=request.user.additionalinfo)
         user_update = UserUpdateForm(request.POST, instance=request.user)
         profile_update = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_update.is_valid() and profile_update.is_valid():
             user_update.save()
             profile_update.save()
-            additional_info.save()
             messages.success(request, 'Updated profile information')
             return redirect('dashboard-profile', username=request.user.username)
     else:
         user_update = UserUpdateForm(instance=request.user)
         profile_update = ProfileUpdateForm(instance=request.user.profile)
-        additional_info = AdditionalInfoUpdateForm(instance=request.user.additionalinfo)
 
     context = {
         'user_update': user_update,
         'profile_update': profile_update,
-        'additional_info': additional_info,
     }
     return render(request, 'dashboard/profile.html', context)

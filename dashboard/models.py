@@ -11,7 +11,17 @@ import datetime
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     pfp = models.ImageField(default='default.jpg', upload_to='profile_pics')
-
+    designation = models.CharField(max_length=20, blank=True)
+    scopus_id = models.CharField(max_length=50, blank=True)
+    wos_id = models.CharField(max_length=50, blank=True)
+    citation_count = models.CharField(max_length=50, blank=True)
+    month_year = models.CharField(max_length=50, blank=True)
+    dept = models.CharField(max_length=7, blank=True)
+    orcid_id = models.CharField(max_length=50, blank=True)
+    vidwan_id = models.CharField(max_length=50, blank=True)
+    h_index = models.CharField(max_length=10, blank=True)
+    i_index = models.CharField(max_length=10, blank=True)
+    
     def __str__(self):
         return f'{self.user.username} Profile'
 
@@ -24,22 +34,6 @@ class Profile(models.Model):
             resize_val = (300, 300)
             img.thumbnail(resize_val)
             img.save(self.pfp.path)
-
-class AdditionalInfo(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    designation = models.CharField(max_length=20, blank=True)
-    scopus_id = models.CharField(max_length=50, blank=True)
-    wos_id = models.CharField(max_length=50, blank=True)
-    citation_count = models.CharField(max_length=50, blank=True)
-    month_year = models.CharField(max_length=50, blank=True)
-    dept = models.CharField(max_length=7, blank=True)
-    orcid_id = models.CharField(max_length=50, blank=True)
-    vidwan_id = models.CharField(max_length=50, blank=True)
-    h_index = models.CharField(max_length=10, blank=True)
-    i_index = models.CharField(max_length=10, blank=True)
-
-    def __str__(self):
-         return f'Additional Info about {self.user.username}'
 
 def current_year():
     return datetime.date.today().year

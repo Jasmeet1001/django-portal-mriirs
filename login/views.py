@@ -9,12 +9,14 @@ def create_account(request):
     if request.method == 'POST':
         form = Signup(request.POST)
         if form.is_valid():
-            usrname = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
+            usrname = email.split('@')[0].split('.')[0]
             if User.objects.filter(email=email).exists():
                 messages.error(request, "A user with that email already exists")
             else:
-                form.save()
+                temp_save = form.save(commit=False)
+                temp_save.username = usrname
+                temp_save.save() 
                 messages.success(request, f" Account created for {usrname}")
                 return redirect('login')
     else:
