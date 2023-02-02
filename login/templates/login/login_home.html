@@ -9,24 +9,25 @@
 {% block txtcntr %}
 <div class="card-body">
 {% endblock txtcntr %}
+    {% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-inline">
+            {{ form|crispy }}
+        </fieldset>
 
-{% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <fieldset class="form-inline">
-        {{ form|crispy }}
-    </fieldset>
-
-    <div class="text-center pt-3 mb-5 pb-1">
-        <button class="btn btn-primary btn-block fa-lg  mb-3" type="submit">
-            Login
-        </button>
-        <a class="text" href="{% url 'password_reset' %}">Forgot Password?</a>
-    </div>
-</form>
-
-<div class="d-flex align-items-center justify-content-center">
-    <p class="m-2" style="font-size: 16px; ">Don't have an account?</p>
-    <a href="{% url 'register' %}"> <button type="button" class="btn btn-outline-danger">Sign UP</button></a>
+        <div class="text-center pt-3 pb-4">
+            <button class="btn btn-primary btn-block fa-lg  mb-3" type="submit">
+                Login
+            </button>
+            <a class="text" href="{% url 'password_reset' %}">Forgot Password?</a>
+        </div>
+    </form>
+    <!-- <div class="d-flex justify-content-center">
+        <p class="m-2" style="font-size: 16px; ">Don't have an account?</p>
+        <a href="{% url 'register' %}"> 
+            <button type="button" class="btn btn-outline-danger">Sign UP</button>
+        </a>
+    </div> -->
+    {% endblock content %}
 </div>
-{% endblock content %}
