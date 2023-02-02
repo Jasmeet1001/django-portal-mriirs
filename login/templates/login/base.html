@@ -14,40 +14,35 @@
     <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
 </head>
 <body>
-    <div class="main-wrapper-bg">
-        <img class="img-fluid" src="{% static 'login/img/mr-bg.jpg' %}"  alt="mr-bg">           
-    </div>
-    <section class="main-wrapper">
-        <div class="login-page-wrapper">
-            <img class="img-fluid" src="{% static 'login/img/mr-logo.png' %}" style="width: 185px;" alt="mr-logo">
-            <h2>MRIIRS Publication Explorer</h2>
+    <div class="login-wrapper-main">
+        <div class="main-wrapper-bg" style="background: url('{% static 'login/img/mr-bg.jpg' %}'); background-repeat: no-repeat; background-size: cover; width: 80%;  filter: brightness(50%);">
         </div>
-        <div class="login-page">
-            <div class="rounded-3 text-black login-form" >
-                    <div class="">
-                        {% block txtcntr %}{% endblock %}
-                            <div class="text-center">
-                                <h4><br></h4>
-                            </div>  
-                            
-                            {% if messages %}
-                                {% for message in messages %}
-                                    {% if message.tags == "error" %}
-                                        <div class="alert alert-danger">
-                                            {{ message }}
-                                        </div>
-                                    {% else %}
-                                        <div class="alert alert-{{ message.tags }}">
-                                            {{ message }}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
+        <div class="main-wrapper">
+            <div class="login-page">
+                <div class="login-page-wrapper-heading ">
+                    <img class="img-fluid" src="{% static 'login/img/mr-logo.png' %}" style="width: 185px;" alt="mr-logo">
+                    <h2 class="mt-5">MRIIRS Publication Explorer</h2>
+                </div>
+                <div class="login-form" >
+                    {% block txtcntr %}{% endblock %}                
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == "error" %}
+                                <div class="alert alert-danger">
+                                    {{ message }}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
                             {% endif %}
-                            {% block content %}{% endblock %}
-                    </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% block content %}{% endblock %}
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <script src="{% static 'login/js/mdb.min.js' %}"></script>
     
