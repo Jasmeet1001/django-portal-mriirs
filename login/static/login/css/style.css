@@ -1,48 +1,100 @@
 * {
     margin: 0;
     padding: 0;
-    overflow-y: hidden;
+    overflow-y: auto;
 }
-    
-.jasmeet {
+
+.login-page::-webkit-scrollbar {
+    width: 0.8vw;
+}
+
+.login-page::-webkit-scrollbar-thumb {
+    background-color: #5438DC;
+    border: .125em solid #DEDCDC;
+    border-radius: 100vw;
+}
+ 
+.login-page::-webkit-scrollbar-thumb:hover {
+    background-color: #5438DC;
+}
+
+.login-page::-webkit-scrollbar-track {
+    border-radius: 100vw;
+    margin: 1em 1em;
+    background-color: #DEDCDC;
+}
+
+.login-wrapper-main {
     display: flex;
-    /* justify-content: space-between; */
-    /* align-items: center; */
-}
-
-
-
-.sainsh {
-    width: 40%;
-    padding-left: 0;
-    /* border: 1px solid red; */
-}
-
-
-
-.shivam {
-    flex-basis: 100%;
+    flex-direction: row;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: flex-end; */
-    align-items: center;
-    /* background-color: red; */
-    position: relative;
 }
 
-.shivam::after {
+
+.main-wrapper-bg::after {
     content: '2023 © All rights reserved & Privacy Policy';
-    top: 95vh;
+    top: 95%;
     left: 2%;
     position: absolute;
-    color: #b9c2cd;
+    color: #fff;
+    /* font-weight: bold; */
+    font-size: large;
 }
 
-.copy  {
-    /* transform: translateY(190px); */
-    color: #b9c2cd;
-    /* color: red; */
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* width: 30%; */
+    padding-left: 20px;
+    overflow-x: hidden;
+}
+
+.login-page-wrapper-heading {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items:  center;
+}
+
+.main-wrapper-bg h2{
+    padding: 10px 0 0 20px;
+    font-weight: 800;
+    font-size: 40px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.login-page {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.login-page h2 {
+    padding-top: 20px; 
+    text-align: center;
+}
+
+.login-form {
+    width: 400px ;
+    /* border: 1px solid black !important; */
+}
+
+
+@media (max-width:800px) {
+    .login-wrapper-main {
+        flex-direction: column;
+
+    }
+
+    .main-wrapper {
+        width: auto;
+    }
+
+    .main-wrapper-bg h2 {
+        display: none;
+    }
 }
 
 .asteriskField {
