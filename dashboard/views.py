@@ -26,13 +26,6 @@ class UpdatePaperView(LoginRequiredMixin, UpdateView):
 def search():
     global SEARCH_UN
     terms = SEARCH_UN.strip().split(';')
-    temp = []
-    for space in terms:
-        temp.append(space.strip())
-    empty_count = temp.count('')
-    for tormv in range(empty_count):
-        temp.remove('')
-    terms = temp
     paper_list = []
     try:
         if len(terms) == 1 and ':' not in terms[0]:
