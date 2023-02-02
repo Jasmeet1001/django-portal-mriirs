@@ -6,76 +6,72 @@
 <title>{{ user.username }}</title>
 {% endblock title %}
 
-
-
 {% block main %}
-<div >
-  <div class="row" >
-    {% for message in messages %}
-      {% if message.tags == 'error' %}
-        <div class="alert alert-danger">
-          {{ message }}
-        </div>
-      {% else %}
-        <div class="alert alert-{{ message.tags }}">
-          {{ message }}
-        </div>
-      {% endif %}
-    {% endfor %}
-    <div class="col-12 col-xl-4">
-      <div class="row">
-        <div class="col-12 mb-3">
-          <div class="card border-0 text-center p-0 pt-2 pb-2">
-            <div class="card-body pb-2">
-              <img src="{{ user.profile.pfp.url }}"class="rounded-circle" width="100" height="100" alt="{{user.username}}">
-              <h4 class="card-title m-t-10 pt-2">{{ user.additionalinfo.designation }} {{ user.first_name }} {{ user.last_name }} </h4>
-              <h6 class="card-subtitle mb-1">{{ user.username }}</h6>
-              <small class="text-gray">{{ user.email }}</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="card card-body border-0 mb-4">
-          <h2 class="h5 mb-4">Additional Information</h2>
-          <div class="d-flex flex-column">
-              <small class="text-muted">Scopus ID </small>
-              <h6>{{ user.additionalinfo.scopus_id }}</h6>
-              <small class="text-muted">Wos ID </small>
-              <h6>{{ user.additionalinfo.wos_id }}</h6>
-              <small class="text-muted">Citation Count </small>
-              <h6>{{ user.additionalinfo.citation_count }}</h6>
-              <small class="text-muted">Month Year </small>
-              <h6>{{ user.additionalinfo.month_year }}</h6>
-              <small class="text-muted">Department </small>
-              <h6>{{ user.additionalinfo.dept }}</h6>
-              <small class="text-muted">Orchid ID </small>
-              <h6>{{ user.additionalinfo.orcid_id }}</h6>
-              <small class="text-muted">Vidwan ID </small>
-              <h6>{{ user.additionalinfo.vidwan_id }}</h6>
-              <small class="text-muted">H Index </small>
-              <h6>{{ user.additionalinfo.h_index }}</h6>
-              <small class="text-muted">I Index </small>
-              <h6>{{ user.additionalinfo.i_index }}</h6>
-          </div>
-          </div>
-          </div>
+<div class="row">
+  {% for message in messages %}
+    {% if message.tags == 'error' %}
+      <div class="alert alert-danger">
+        {{ message }}
       </div>
+    {% else %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+  <div class="col-12 col-xl-4">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <div class="card border-0 text-center p-0 pt-2 pb-2">
+          <div class="card-body pb-2">
+            <img src="{{ user.profile.pfp.url }}"class="rounded-circle" width="100" height="100" alt="{{user.username}}">
+            <h4 class="card-title m-t-10 pt-2">{{ user.additionalinfo.designation }} {{ user.first_name }} {{ user.last_name }} </h4>
+            <h6 class="card-subtitle mb-1">{{ user.username }}</h6>
+            <small class="text-gray">{{ user.email }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card card-body border-0 mb-4">
+        <h2 class="h5 mb-4">Additional Information</h2>
+        <div class="d-flex flex-column">
+            <small class="text-muted">Scopus ID </small>
+            <h6>{{ user.additionalinfo.scopus_id }}</h6>
+            <small class="text-muted">Wos ID </small>
+            <h6>{{ user.additionalinfo.wos_id }}</h6>
+            <small class="text-muted">Citation Count </small>
+            <h6>{{ user.additionalinfo.citation_count }}</h6>
+            <small class="text-muted">Month Year </small>
+            <h6>{{ user.additionalinfo.month_year }}</h6>
+            <small class="text-muted">Department </small>
+            <h6>{{ user.additionalinfo.dept }}</h6>
+            <small class="text-muted">Orchid ID </small>
+            <h6>{{ user.additionalinfo.orcid_id }}</h6>
+            <small class="text-muted">Vidwan ID </small>
+            <h6>{{ user.additionalinfo.vidwan_id }}</h6>
+            <small class="text-muted">H Index </small>
+            <h6>{{ user.additionalinfo.h_index }}</h6>
+            <small class="text-muted">I Index </small>
+            <h6>{{ user.additionalinfo.i_index }}</h6>
+        </div>
+        </div>
+        </div>
     </div>
-    <div class="col-12 col-xl-8">
-      <div class="card card-body border-0 mb-4">
-          <h2 class="h5 mb-3">General information</h2>
-          <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-              <div class="pb-3">
-                {{ user_update|crispy }}
-                {{ additional_info|crispy }}
-              </div>
-              <div class="pb-3">
-                {{ profile_update|crispy }}
-              </div>
-              <button class="btn btn-primary" type="submit">Save Profile</button>
-          </form>
-      </div>
+  </div>
+  <div class="col-12 col-xl-8">
+    <div class="card card-body border-0 mb-4">
+        <h2 class="h5 mb-3">General information</h2>
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+            <div class="pb-3">
+              {{ user_update|crispy }}
+              {{ additional_info|crispy }}
+            </div>
+            <div class="pb-3">
+              {{ profile_update|crispy }}
+            </div>
+            <button class="btn btn-primary" type="submit">Save Profile</button>
+        </form>
     </div>
   </div>
 </div>
