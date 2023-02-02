@@ -75,9 +75,9 @@
                                         <img src="{{ user.profile.pfp.url }}" alt="mdo" width="32" height="32" class="rounded-circle">
                                     </a>
                                     <ul class="dropdown-menu text-small">
-                                        <li><a class="dropdown-item" href="{% url 'dashboard-profile' user.username %}">Profile</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'dashboard-profile' request.user.username %}">Profile</a></li>
                                         <li><a class="dropdown-item" href="{% url 'dashboard-home' %}">Dashboard</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'dashboard-mypaper' user.username %}">Your Papers</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'dashboard-mypaper' request.user.username %}">Your Papers</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                                     </ul>
