@@ -81,12 +81,15 @@
                 {% endif %}
 
                 <td>{{ paper.index_db }}</td>
-
-                <td>
-                    <button type="button" class="btn btn-link btn-sm">
-                        <a href="{% url 'dashboard-edit' paper.id %}">Edit</a>
-                    </button>
-                </td>
+                {% if fullname %}
+                    {% if fullname in paper.authors or is_admin %}
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm">
+                            <a href="{% url 'dashboard-edit' paper.id %}">Edit</a>
+                        </button>
+                    </td>
+                    {% endif %}
+                {% endif %}
             </tr>
         {% endfor %}
       </tbody>

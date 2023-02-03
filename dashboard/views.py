@@ -6,9 +6,11 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
 
 from .models import ResearchPaper
-from .forms import UserUpdateForm, ProfileUpdateForm, AddPaper, ImportFile
+from .forms import UserUpdateForm, ProfileUpdateForm, AddPaper, ImportFile, Signup
 # , AdditionalInfoUpdateForm
 
 from .imp_exp import import_excel, pd
@@ -187,6 +189,9 @@ def template_download(request):
     df.to_excel(response, index=False)
     return response
 
+def is_admin(user):
+    return user.groups.filter(name="adminstaff").exists()
+
 @login_required
 def homepage(request):
     global SEARCH_UN
@@ -201,11 +206,17 @@ def homepage(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    fullname = f"{request.user.first_name} {request.user.last_name}"
+    if fullname.strip() == '':
+        fullname = None
+    print(fullname)
     context = {
         # 'paper_list': paper_list,
         'paper_count': len(paper_list),
         'page_obj': page_obj,
-        'search': str(SEARCH_UN)
+        'search': str(SEARCH_UN),
+        'is_admin': is_admin(request.user),
+        'fullname': fullname
     }
     return render(request, 'dashboard/home.html', context)
 
@@ -279,12 +290,13 @@ def my_papers(request, username):
     if full_name.rstrip() != '':
         context={
             'paper_count': paper_count,
-            'page_obj': page_obj
+            'page_obj': page_obj,
+            'fullname': full_name
         }
     else:
         context = {
             'paper_count': 0,
-            'page_obj': ''
+            'page_obj': '',
         }
     
     return render(request, 'dashboard/home.html', context)
@@ -324,6 +336,30 @@ def add_new(request):
     }
 
     return render(request, 'dashboard/add_paper.html', context)
+
+
+@user_passes_test(is_admin)
+def create_account(request):
+    if request.method == 'POST':
+        form = Signup(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            usrname = email.split('@')[0].split('.')[0]
+            if User.objects.filter(email=email).exists():
+                messages.error(request, "A user with that email already exists")
+            else:
+                User.objects.create_user(usrname, email, 'welcome12345')
+                messages.success(request, f" Account created for {usrname}")
+                return redirect('create-account')
+    else:
+        form = Signup()
+    
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'dashboard/add_account.html', context)
+
 
 @login_required
 def profile_view(request, username):

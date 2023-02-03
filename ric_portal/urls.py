@@ -20,7 +20,7 @@ from login import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', user_views.create_account, name='register'),
+    # path('register/', user_views.create_account, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='login/login_home.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='login/logout_home.html'), name='logout'),
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='login/reset_pass.html'), name = 'password_reset'),

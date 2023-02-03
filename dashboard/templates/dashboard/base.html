@@ -80,6 +80,9 @@
                             </a>
                             <ul class="dropdown-menu text-small">
                                 <li><a class="dropdown-item" href="{% url 'dashboard-profile' user.username %}">Profile</a></li>
+                                {% if is_admin %}
+                                <li><a class="dropdown-item" href="{% url 'create-account' %}">Add User</a></li>
+                                {% endif %}
                                 <li><a class="dropdown-item" href="{% url 'dashboard-home' %}">Dashboard</a></li>
                                 <li><a class="dropdown-item" href="{% url 'dashboard-mypaper' user.username %}">Your Papers</a></li>
                                 <li><hr class="dropdown-divider"></li>
