@@ -1,0 +1,25 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Add User</title>
+{% endblock title %}
+
+{% block main %} 
+<div class="col">
+  <div class="card border-0">
+    <div class="card-body">
+        <h5 class="card-title">Create Account</h5>
+        <form method="POST" class="form-group">
+            {% csrf_token %}
+            <div class="row md-3 pb-3">
+              {{ form|crispy }}
+                {#<label for="email_id">Email ID: </label>#}
+                {#<input type="email" id="email_id" placeholder="Enter faculty email Id">#}
+            </div>
+            <button type="submit" class="btn btn-primary" value="Save">Create Account</button>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock main %}
