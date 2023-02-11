@@ -6,7 +6,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.homepage, name='dashboard-home'),
-    path('user_creation', views.create_account, name='create-account'),
+    path('administrator/user-creation', views.create_account, name='create-account'),
+    path('administrator/delete/user/<int:pk>/', views.del_user_view, name='admin-delUser'),
+    path('administrator/view-papers/faculty/<int:pk>/', views.show_facpaper_view, name='admin-viewpapers'),
+    
     path('inj/', views.inj_view, name='dashboard-inj'),
     path('inc/', views.inc_view, name='dashboard-inc'),
     path('bkch/', views.book_chapter_view, name='dashboard-bkch'),
@@ -15,7 +18,7 @@ urlpatterns = [
     path('paper/export', views.export_data, name='dashboard-export'),
     path('paper/template-download', views.template_download, name='dashboard-template'),
     path('<str:username>/', views.profile_view, name='dashboard-profile'),
-    path('<str:username>/paper/', views.my_papers, name='dashboard-mypaper'),
+    path('<str:username>/papers/', views.my_papers, name='dashboard-mypaper'),
 
 ]
 
