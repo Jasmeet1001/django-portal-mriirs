@@ -7,7 +7,7 @@
 {% endblock title %}
 
 {% block main %}
-<div class="row">
+<div class="row m-2">
   {% for message in messages %}
     {% if message.tags == 'error' %}
       <div class="alert alert-danger">
@@ -25,7 +25,7 @@
         <div class="card border-0 text-center p-0 pt-2 pb-2">
           <div class="card-body pb-2">
             <img src="{{ user.profile.pfp.url }}"class="rounded-circle" width="100" height="100" alt="{{user.username}}">
-            <h4 class="card-title m-t-10 pt-2">{{ user.additionalinfo.designation }} {{ user.first_name }} {{ user.last_name }} </h4>
+            <h4 class="card-title m-t-10 pt-2">{{ user.profile.designation }} {{ user.first_name }} {{ user.last_name }} </h4>
             <h6 class="card-subtitle mb-1">{{ user.username }}</h6>
             <small class="text-gray">{{ user.email }}</small>
           </div>
@@ -36,23 +36,23 @@
         <h2 class="h5 mb-4">Additional Information</h2>
         <div class="d-flex flex-column">
             <small class="text-muted">Scopus ID </small>
-            <h6>{{ user.additionalinfo.scopus_id }}</h6>
+            <h6>{{ user.profile.scopus_id }}</h6>
             <small class="text-muted">Wos ID </small>
-            <h6>{{ user.additionalinfo.wos_id }}</h6>
+            <h6>{{ user.profile.wos_id }}</h6>
             <small class="text-muted">Citation Count </small>
-            <h6>{{ user.additionalinfo.citation_count }}</h6>
+            <h6>{{ user.profile.citation_count }}</h6>
             <small class="text-muted">Month Year </small>
-            <h6>{{ user.additionalinfo.month_year }}</h6>
+            <h6>{{ user.profile.month_year }}</h6>
             <small class="text-muted">Department </small>
-            <h6>{{ user.additionalinfo.dept }}</h6>
+            <h6>{{ user.profile.dept }}</h6>
             <small class="text-muted">Orchid ID </small>
-            <h6>{{ user.additionalinfo.orcid_id }}</h6>
+            <h6>{{ user.profile.orcid_id }}</h6>
             <small class="text-muted">Vidwan ID </small>
-            <h6>{{ user.additionalinfo.vidwan_id }}</h6>
+            <h6>{{ user.profile.vidwan_id }}</h6>
             <small class="text-muted">H Index </small>
-            <h6>{{ user.additionalinfo.h_index }}</h6>
+            <h6>{{ user.profile.h_index }}</h6>
             <small class="text-muted">I Index </small>
-            <h6>{{ user.additionalinfo.i_index }}</h6>
+            <h6>{{ user.profile.i_index }}</h6>
         </div>
         </div>
         </div>

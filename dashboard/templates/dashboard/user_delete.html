@@ -1,0 +1,20 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Delete User</title>
+{% endblock title %}
+
+{% block main %} 
+<div class="col">
+  <div class="card border-0">
+    <div class="card-body">
+        <h5 class="card-title">Are you sure you want to delete "{{ object }}"?</h5>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" value="Save">Confirm</button>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock main %}

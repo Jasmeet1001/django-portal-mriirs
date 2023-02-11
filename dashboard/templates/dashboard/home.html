@@ -7,9 +7,9 @@
 
 {% block main %}
 {% if page_obj %}
-<h2 class="h3 display-6">Research Papers - {{paper_count}}</h2>
+<h2 class="h3 display-6 m-3">Research Papers - {{paper_count}}</h2>
 <br>
-<div class="card card-body border-0 table-wrapper table-responsive">
+<div class="card card-body border-0 table-wrapper table-responsive m-3">
     <table class="table">
       <thead>
         <tr>
@@ -18,31 +18,54 @@
             <th scope="col">Domain</th>
             <th scope="col">Title of Paper</th>
             <th scope="col">Department</th>
-            <th scope="col">Name of Journal</th>
-            <th scope="col">Name of Conference</th>
-            <th scope="col">Title of Book</th>
-            <th scope="col">Title of Chapter</th>
+            {% if request.path == '/bkch/' %}
+                <th scope="col">Title of Book</th>
+                <th scope="col">Title of Chapter</th>
+            {% endif %}
+            {% if request.path == '/inj/'%}
+                <th scope="col">Name of Journal</th>
+            {% endif %}
+            {% if request.path == '/inc/'%}
+                <th scope="col">Name of Conference</th>
+            {% endif %}
+            {% if request.path == '/' %}
+                <th scope="col">Name of Journal</th>
+                <th scope="col">Name of Conference</th>
+                <th scope="col">Title of Book</th>
+                <th scope="col">Title of Chapter</th>
+            {% endif %}
             <th scope="col">Student</th>
             <th scope="col">Scholar</th>
             <th scope="col">Month of Publish</th>
             <th scope="col">Year of Publish</th>
             <th scope="col">DOI</th>
             <th scope="col">Index Database</th>
-            <th scope="col">Change Details</th>
+            {% if is_admin or can_edit %}
+                <th scope="col">Change Details</th>
+            {% endif %}
         </tr>
       </thead>
       <tbody>
         {% for paper in page_obj %}
             <tr>
                 <td>{{ paper.faculty }}</td>
-                <td>{{ paper.authors }}</td>
+                <td>{{ paper.authors }}, {{ paper.outside_authors }}</td>
                 <td>{{ paper.domain }}</td>
                 <td>{{ paper.title_of_paper }}</td>
                 <td>{{ paper.dept }}</td>
-                <td>{{ paper.name_of_journal }}</td>
-                <td>{{ paper.conference }}</td>
-                <td>{{ paper.title_of_book }}</td>
-                <td>{{ paper.title_of_chapter }}</td>
+                {% if request.path == '/bkch/' %}
+                    <td>{{ paper.title_of_book }}</td>
+                    <td>{{ paper.title_of_chapter }}</td>
+                {% elif request.path == '/inj/' %}
+                    <td>{{ paper.name_of_journal }}</td>
+                {% elif request.path == '/inc/' %}
+                    <td>{{ paper.name_of_conference }}</td>
+                {% elif request.path == '/' %}
+                    <td>{{ paper.name_of_journal }}</td>
+                    <td>{{ paper.name_of_conference }}</td>
+                    <td>{{ paper.title_of_book }}</td>
+                    <td>{{ paper.title_of_chapter }}</td>
+                {% endif %}
                 <td>{{ paper.student }}</td>
                 <td>{{ paper.scholar }}</td>
                 <td>{{ paper.month }}</td>
@@ -60,12 +83,13 @@
                 {% endif %}
 
                 <td>{{ paper.index_db }}</td>
-
+                {% if is_admin or can_edit %}
                 <td>
                     <button type="button" class="btn btn-link btn-sm">
                         <a href="{% url 'dashboard-edit' paper.id %}">Edit</a>
                     </button>
                 </td>
+                {% endif %}
             </tr>
         {% endfor %}
       </tbody>
@@ -102,6 +126,6 @@
     </div>
 </div>
 {% else %}
-    <h3 class="display-6 text-left pb-5">No Research Papers Found</h3>
+    <h3 class="display-6 text-left pb-5 m-3">No Research Papers Found</h3>
 {% endif %}
 {% endblock main %}

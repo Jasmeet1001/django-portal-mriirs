@@ -1,0 +1,67 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Add User</title>
+{% endblock title %}
+
+{% block main %} 
+<div class="col m-3">
+  <div class="card border-0">
+    <div class="card-body">
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+          <div class="alert alert-danger">
+              {{ message }}
+          </div>
+        {% else %}
+          <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+          </div>
+        {% endif %}
+        {% endfor %}
+        <h5 class="card-title">Create Account</h5>
+        <form method="POST" class="form-group">
+          {% csrf_token %}
+          <div class="row md-3 pb-3">
+            {{ form|crispy }}
+          </div>
+          <button type="submit" class="btn btn-primary" value="Save">Create Account</button>
+        </form>
+    </div>
+  </div>
+</div>
+<div class="col m-3">
+  <div class="card border-0">
+    <div class="card-body">
+      <h5 class="card-title">Active Faculty Members:</h5>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Department</th>
+            <th scope="col">Designation</th>
+            <th scope="col">Name</th>
+            <th scope="col">View Papers</th>
+            <th scope="col">Delete Account</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fac in f_acc %}
+            <tr>
+              <td>{{ fac.username }}</td>
+              <td>{{ fac.profile.dept }}</td>
+              <td>{{ fac.profile.designation }}</td>
+              <td>{{ fac.first_name }} {{ fac.last_name }}</td>
+              <td> <a href="{% url 'admin-viewpapers' fac.pk %}" target="_blank" rel="noopener noreferrer">View</a> </td>
+              {#<td>Dummy</td>#}
+              {#<td>Dummy</td>#}
+              <td><a href="{% url 'admin-delUser' fac.pk %}">Delete</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock main %}
