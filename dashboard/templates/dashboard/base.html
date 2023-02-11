@@ -79,12 +79,12 @@
                                 <img src="{{ user.profile.pfp.url }}" alt="mdo" width="32" height="32" class="rounded-circle">
                             </a>
                             <ul class="dropdown-menu text-small">
-                                <li><a class="dropdown-item" href="{% url 'dashboard-profile' user.username %}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dashboard-profile' request.user.username %}">Profile</a></li>
                                 {% if is_admin %}
                                 <li><a class="dropdown-item" href="{% url 'create-account' %}">Add User</a></li>
                                 {% endif %}
                                 <li><a class="dropdown-item" href="{% url 'dashboard-home' %}">Dashboard</a></li>
-                                <li><a class="dropdown-item" href="{% url 'dashboard-mypaper' user.username %}">Your Papers</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dashboard-mypaper' request.user.username %}">Your Papers</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
@@ -106,29 +106,12 @@
             
             nav.classList.toggle('clicked')    
 
-            // setTimeout(() => {
-            //     nav.classList.toggle('clicked')    
-                
-            // }, 250);
-            
             
             if (counter % 2 == 0){
                 ham.setAttribute("class", "click")
-
-                // setTimeout(() => {
-                //     ham.setAttribute("class", "click")
-
-                // }, 250);
-                
             }
             else 
                 ham.setAttribute("class", 'hamburger')
-
-                // setTimeout(() => {
-                //     ham.setAttribute("class", 'hamburger')
-
-                // }, 250);
-                
             counter++
 
         })
