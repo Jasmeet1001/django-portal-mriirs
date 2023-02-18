@@ -32,7 +32,7 @@ DEBUG =  os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['mreicitationexplorer.up.railway.app', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://mreicitationexplorer.up.railway.app']
-CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
 
 # Application definition
@@ -95,7 +95,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 AUTH_PASSWORD_VALIDATORS = [
     {
