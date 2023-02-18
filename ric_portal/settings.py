@@ -33,7 +33,7 @@ DEBUG =  os.environ.get('DJANGO_DEBUG', '') != 'False'
 ALLOWED_HOSTS = ['mreicitationexplorer.up.railway.app', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://mreicitationexplorer.up.railway.app']
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 # Application definition
 
