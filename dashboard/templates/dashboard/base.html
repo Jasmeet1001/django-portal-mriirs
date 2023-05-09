@@ -60,11 +60,16 @@
                     <form method="GET" id="search-bar" class=" custom-js-hover" role="search" action="{% url 'dashboard-home' %}">
                         <div class="custom-js-hover" >
                             <input name="search-result" id="search-input" type="search" class="form-control "  placeholder="Search..." aria-label="Search" > 
-                            <div class="custom-js-button" > 
-                                <p>!</p> 
-                            </div>
                         </div>
                     </form>
+                    <button id="myBtn">Click For Help</button>
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                          <span class="close">&times;</span>
+                          <p>Multiple Column Specific Search:- faculty:FET; department:CSE; year:2020</p>
+                          <p>Column Specific Search:- faculty:FET or department:CSE or year:2020</p>
+                        </div>                    
+                    </div>
                 </div>
                 <div class="profile-info">
                     <div class="col buttons">
@@ -115,6 +120,21 @@
             counter++
 
         })
+
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("myBtn");
+        var span = document.getElementsByClassName("close")[0];
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
