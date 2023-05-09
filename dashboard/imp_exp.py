@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from .models import ResearchPaper
+from django.db import transaction
 
+@transaction.atomic
 def import_excel(request, file):
     fs = FileSystemStorage()
     filename = fs.save(file.name, file)
@@ -32,28 +34,35 @@ def import_excel(request, file):
                     curr_paper.users_associated.add(curr_user)
                 else:
                     if len(rows[1]) > 5:
+                        print("Lodue 0")
                         message += f'Possible error in row {rows[0] + 1}'
                         return (message, fs)
                     elif not str(rows[2]).strip():
+                        print("Lodue 1")
                         message += f'Authors field cannot be empty in row {rows[0] + 1}'
                         return (message, fs)
                     elif not str(rows[5]).strip():
+                        print("Lodue 2")
                         message += f'Title of Papers field cannot be empty in row {rows[0] + 1}'
                         return (message, fs)
                     elif len(rows[11]) > 3:
+                        print("Lodue 3")
                         message += f'Possible error in row {rows[0] + 1}'
                         return (message, fs)
                     elif len(rows[12]) > 3:
+                        print("Lodue 4")
                         message += f'Possible error in row {rows[0] + 1}'
                         return (message, fs)
                     elif str(rows[13]).isdigit():
+                        print("Lodue 5")
                         message += f'Month should not be in number in row {rows[0] + 1}'
                         return (message, fs)
-                    elif str(rows[14]).strip():
-                        if '-' in str(rows[14]) and len(str(rows[14]).split('-')[0]) == 4 and len(str(rows[14]).split('-')[1]) == 4:
-                            message += f'Year column should be in the format of YYYY-YYYY in row {rows[0] + 1}'
-                            return (message, fs)
+                    elif str(rows[14]).strip() and not('-' in str(rows[14]) and len(str(rows[14]).split('-')[0]) == 4 and len(str(rows[14]).split('-')[1]) == 4):
+                        print("Lodue 6")
+                        message += f'Year column should be in the format of YYYY-YYYY in row {rows[0] + 1}'
+                        return (message, fs)
                     elif str(rows[15]).strip():
+                        print("Lodue 7")
                         validate = URLValidator(schemes=['doi', 'http', 'https', 'fpt', 'ftps'])
                         try:
                             validate(str(rows[15]))
@@ -61,6 +70,7 @@ def import_excel(request, file):
                             message += f'Provided doi is not a valid url in row {rows[0] + 1}'
                             return (message, fs)
                     else:
+                        print("Lodue 8")
                         tbl_val = ResearchPaper.objects.create(
                             faculty=rows[1], 
                             authors=rows[2], 
