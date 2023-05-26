@@ -9,21 +9,26 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User, Group
-# from django.core.files.storage import FileSystemStorage as fs
+
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+
+from dotenv import load_dotenv #type:ignore
 
 from .models import ResearchPaper
 from .forms import UserUpdateForm, ProfileUpdateForm, AddPaper, ImportFile, Signup
-# , AdditionalInfoUpdateForm
-
 from .imp_exp import import_excel, pd
 
 import uuid
+import os
+
+load_dotenv()
 
 # Create your views here.
 SEARCH_UN = ''
 
 def is_admin(user):
-    return user.groups.filter(name="adminstaff").exists()
+    return user.groups.filter(name="adminstaff").exists() or user.is_superuser
 
 class UpdatePaperView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ResearchPaper
@@ -360,6 +365,7 @@ def add_new(request):
                 if (request.FILES['fileupload-file'].name.split('.')[-1] in valid_formats):
                     message = import_excel(request, request.FILES['fileupload-file'])
                     if 'Successful' in message[0]:
+                        print("ho gaya")
                         messages.success(request, f"{message[0]}")
                     else:
                         messages.error(request, f"{message[0]}")
@@ -408,6 +414,24 @@ def add_new(request):
 
     return render(request, 'dashboard/add_paper.html', context)
 
+
+def send_creation_mail(email, username, password):
+    configuration = sib_api_v3_sdk.Configuration()
+    configuration.api_key['api-key'] = os.getenv('API_KEY')
+    api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
+    subject = 'Welcome to MRIIRS Citation Program'
+    html_content = f'Here is your username and password- <br><br> Username - {username} | Password - {password}'
+    sender = {"name": 'MRIIRS', "email": 'mriirs.ce@gmail.com'}
+    to = [{"email": email, "name": username}]
+    headers = {"Some-Custom-Name": "unique-id-1234"}
+    send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(to=to, headers=headers,html_content=html_content, sender=sender, subject=subject)
+
+    try:
+        api_response = api_instance.send_transac_email(send_smtp_email)
+    except ApiException as e:
+        print(f"Exception when calling SMTPApi->send_transac_email: {e}\n")
+
+
 @login_required
 @user_passes_test(is_admin, login_url = '/forbidden/', redirect_field_name=None) #type:ignore
 def create_account(request):
@@ -430,6 +454,9 @@ def create_account(request):
                 User.objects.create_user(usrname, email, password)
                 User.objects.get(username=usrname).groups.add(group)
                 messages.success(request, f"Account created for {email} with password {password}")
+
+                send_creation_mail(email, usrname, password)
+
                 return redirect('create-account')
     else:
         form = Signup()
